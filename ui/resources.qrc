@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icon/white_EpClose.png</file>
+    <file>icon/white_EpFullScreen.png</file>
+    <file>icon/white_EpMinus.png</file>
+    <file>icon/EpArrowDown.png</file>
+    <file>icon/EpArrowLeft.png</file>
+    <file>icon/EpArrowRight.png</file>
+    <file>icon/EpArrowUp.png</file>
+    <file>icon/EpClose.png</file>
+    <file>icon/EpFullScreen.png</file>
+    <file>icon/EpMinus.png</file>
+    <file>icon/icon.ico</file>
+  </qresource>
+</RCC>
