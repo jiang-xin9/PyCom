@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtCore import QPropertyAnimation, Qt, pyqtProperty, QEasingCurve, QRect
 from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QDialog, QVBoxLayout, QLabel, QGraphicsDropShadowEffect
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QLabel, QGraphicsDropShadowEffect, QWidget
 
 
 class NewQPushButton(QPushButton):
@@ -11,7 +11,6 @@ class NewQPushButton(QPushButton):
         self.hover = False
         self.circle_pos = None
         self.click_effect_value = 1.0
-        self._scale = 1.0
         self._color = QColor("#f0f0f0")  # Initialize the color
 
         self.default_style = """
@@ -44,12 +43,6 @@ class NewQPushButton(QPushButton):
         self.click_anim.setStartValue(1.0)
         self.click_anim.setEndValue(0.0)
         self.click_anim.setEasingCurve(QEasingCurve.OutCubic)
-
-        self.scale_anim = QPropertyAnimation(self, b"scale")
-        self.scale_anim.setDuration(200)
-        self.scale_anim.setStartValue(1.0)
-        self.scale_anim.setEndValue(0.9)
-        self.scale_anim.setEasingCurve(QEasingCurve.OutCubic)
 
         self.color_anim = QPropertyAnimation(self, b"color")
         self.color_anim.setDuration(200)
@@ -85,10 +78,6 @@ class NewQPushButton(QPushButton):
         self.click_anim.setDirection(QPropertyAnimation.Forward)
         self.click_anim.start()
 
-        self.scale_anim.stop()
-        self.scale_anim.setDirection(QPropertyAnimation.Forward)
-        self.scale_anim.start()
-
         self.color_anim.stop()
         self.color_anim.setDirection(QPropertyAnimation.Forward)
         self.color_anim.start()
@@ -99,10 +88,6 @@ class NewQPushButton(QPushButton):
         self.click_anim.stop()
         self.click_anim.setDirection(QPropertyAnimation.Backward)
         self.click_anim.start()
-
-        self.scale_anim.stop()
-        self.scale_anim.setDirection(QPropertyAnimation.Backward)
-        self.scale_anim.start()
 
         self.color_anim.stop()
         self.color_anim.setDirection(QPropertyAnimation.Backward)
@@ -128,18 +113,6 @@ class NewQPushButton(QPushButton):
         self.click_effect_value = value
         self.update()
 
-    def get_scale(self):
-        return self._scale
-
-    def set_scale(self, value):
-        self._scale = value
-        geom = self.geometry()
-        new_width = int(geom.width() * value)
-        new_height = int(geom.height() * value)
-        new_x = geom.x() + (geom.width() - new_width) // 2
-        new_y = geom.y() + (geom.height() - new_height) // 2
-        self.setGeometry(new_x, new_y, new_width, new_height)
-
     def get_color(self):
         return self._color
 
@@ -155,6 +128,5 @@ class NewQPushButton(QPushButton):
         """)
 
     click_effect = pyqtProperty(float, get_click_effect, set_click_effect)
-    scale = pyqtProperty(float, get_scale, set_scale)
     color = pyqtProperty(QColor, get_color, set_color)
 
