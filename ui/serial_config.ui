@@ -17,7 +17,11 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>串口配置</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/icon/icon.ico</normaloff>:/icons/icon/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -39,13 +43,13 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="font">
@@ -67,13 +71,13 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="font">
@@ -99,13 +103,13 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="font">
@@ -127,13 +131,13 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="font">
@@ -156,13 +160,13 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="font">
@@ -184,13 +188,13 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="font">
@@ -293,13 +297,13 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="font">
@@ -321,13 +325,13 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="font">
@@ -353,13 +357,13 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>35</width>
-            <height>16777215</height>
+            <height>30</height>
            </size>
           </property>
           <property name="font">
@@ -381,13 +385,13 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>120</width>
-            <height>35</height>
+            <height>30</height>
            </size>
           </property>
           <property name="font">
@@ -416,13 +420,13 @@
        <property name="minimumSize">
         <size>
          <width>120</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>120</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="font">
@@ -430,6 +434,9 @@
          <family>微软雅黑</family>
          <pointsize>12</pointsize>
         </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
         <string>OK</string>
@@ -441,13 +448,13 @@
        <property name="minimumSize">
         <size>
          <width>120</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>120</width>
-         <height>35</height>
+         <height>30</height>
         </size>
        </property>
        <property name="font">
@@ -455,6 +462,9 @@
          <family>微软雅黑</family>
          <pointsize>12</pointsize>
         </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
         <string>Cancel</string>
@@ -477,6 +487,8 @@
    <header>newcombox.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
