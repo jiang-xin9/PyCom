@@ -343,7 +343,7 @@ QToolButton::hover {
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>30</height>
+                <height>29</height>
                </size>
               </property>
               <property name="cursor">
@@ -359,7 +359,7 @@ QToolButton::hover {
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>30</height>
+                <height>29</height>
                </size>
               </property>
               <property name="cursor">
@@ -375,7 +375,7 @@ QToolButton::hover {
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>30</height>
+                <height>29</height>
                </size>
               </property>
               <property name="cursor">
@@ -653,6 +653,19 @@ QToolButton::hover {
                   <layout class="QVBoxLayout" name="verticalLayout_5">
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_5">
+                     <item>
+                      <widget class="QPushButton" name="close_com">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>30</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>关闭串口</string>
+                       </property>
+                      </widget>
+                     </item>
                      <item>
                       <widget class="NewQPushButton" name="clear_send_text">
                        <property name="minimumSize">
