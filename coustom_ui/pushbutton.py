@@ -1,7 +1,8 @@
-
+import sys
 from PyQt5.QtCore import QPropertyAnimation, Qt, pyqtProperty, QEasingCurve, QRect
 from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtWidgets import QPushButton, QGraphicsDropShadowEffect
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QDialog, QVBoxLayout, QLabel, QGraphicsDropShadowEffect
+
 
 class NewQPushButton(QPushButton):
     def __init__(self, text):
@@ -27,7 +28,7 @@ class NewQPushButton(QPushButton):
                 border: 2px solid #8f8f91;
                 border-radius: 5px;
                 background-color: rgb(64, 158, 255);
-	            color: rgb(255, 255, 255);
+                color: rgb(255, 255, 255);
                 padding: 5px 10px;
             }
         """
@@ -55,6 +56,10 @@ class NewQPushButton(QPushButton):
         self.color_anim.setStartValue(QColor("#f0f0f0"))
         self.color_anim.setEndValue(QColor("#c0c0c0"))
         self.color_anim.setEasingCurve(QEasingCurve.OutCubic)
+        self.color_anim.finished.connect(self.reset_color)
+
+    def reset_color(self):
+        self.setStyleSheet(self.default_style)
 
     def enterEvent(self, event):
         self.hover = True
@@ -152,5 +157,4 @@ class NewQPushButton(QPushButton):
     click_effect = pyqtProperty(float, get_click_effect, set_click_effect)
     scale = pyqtProperty(float, get_scale, set_scale)
     color = pyqtProperty(QColor, get_color, set_color)
-
 
