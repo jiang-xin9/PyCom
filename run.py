@@ -4,6 +4,7 @@ from ui.index import Ui_Form
 from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
 
+
 class PyCom(QWidget, Ui_Form):
 
     def __init__(self):
