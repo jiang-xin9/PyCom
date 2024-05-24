@@ -4,6 +4,7 @@ from ui.index import Ui_Form
 from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
 from ui.serial_config import Serial_Form
+from ui.instruction import Instruction_Form
 
 
 class PyCom(QWidget, Ui_Form):
@@ -25,11 +26,16 @@ class PyCom(QWidget, Ui_Form):
         self.back_expand = BackExpand(self)
         self.show()
         self.serial_config_btn.clicked.connect(self.show_serial_config)
+        self.send_instruction_btn.clicked.connect(self.show_instruction)
 
     def show_serial_config(self):
         self.serial_config_window = SerialUi()
         self.serial_config_window.show()
         # self.serial_config_window.show()
+
+    def show_instruction(self):
+        self.instruction_window = InstructionUi()
+        self.instruction_window.show()
 
     def init_singers(self):
         self.close_btn.clicked.connect(self.close)
@@ -55,6 +61,13 @@ class SerialUi(QWidget, Serial_Form):
 
     def __init__(self, parent=None):
         super(SerialUi, self).__init__(parent)
+        self.setupUi(self)
+
+
+class InstructionUi(QWidget, Instruction_Form):
+
+    def __init__(self, parent=None):
+        super(InstructionUi, self).__init__(parent)
         self.setupUi(self)
 
 

@@ -42,6 +42,24 @@ class ConfigReader:
         except (configparser.NoSectionError, configparser.NoOptionError):
             return default
 
+    def save_data(self, data):
+        """
+        保存数据到配置文件。
+
+        :param data: 要保存的数据，字典类型，格式为 {section: {option: value}}
+        """
+        try:
+            for section, options in data.items():
+                if not self.config.has_section(section):
+                    self.config.add_section(section)
+                for option, value in options.items():
+                    self.config.set(section, option, value)
+
+            with open(self.file_path, 'w') as configfile:
+                self.config.write(configfile)
+            self.signal_emitter.send_signal("Configuration saved successfully.")
+        except Exception as e:
+            self.signal_emitter.send_signal(f"Failed to save configuration: {e}")
 
 # if __name__ == '__main__':
 #     config_reader = ConfigReader('fast_btn_config.ini')

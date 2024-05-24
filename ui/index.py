@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1040, 689)
+        Form.resize(1118, 689)
         Form.setStyleSheet("")
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -105,7 +105,7 @@ class Ui_Form(object):
         self.buttomFrame.setObjectName("buttomFrame")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.buttomFrame)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_2.setSpacing(2)
+        self.verticalLayout_2.setSpacing(1)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.tag_frame = QtWidgets.QFrame(self.buttomFrame)
         self.tag_frame.setMinimumSize(QtCore.QSize(0, 31))
@@ -205,6 +205,7 @@ class Ui_Form(object):
         self.frame_2.setObjectName("frame_2")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.frame_2)
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_4.setSpacing(2)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.textEdit = QtWidgets.QTextEdit(self.frame_2)
         self.textEdit.setObjectName("textEdit")
@@ -218,6 +219,7 @@ class Ui_Form(object):
         self.frame_3.setObjectName("frame_3")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.frame_3)
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_6.setSpacing(2)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")

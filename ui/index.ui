@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1040</width>
+    <width>1118</width>
     <height>689</height>
    </rect>
   </property>
@@ -233,7 +233,7 @@ QToolButton::hover {
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
-       <number>2</number>
+       <number>1</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -505,6 +505,9 @@ QToolButton::hover {
                  <enum>QFrame::Raised</enum>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_4">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
@@ -541,6 +544,9 @@ QToolButton::hover {
                  <enum>QFrame::Raised</enum>
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_6">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
