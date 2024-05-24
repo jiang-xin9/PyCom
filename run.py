@@ -17,18 +17,22 @@ class PyCom(QWidget, Ui_Form):
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self._isTracking = False
-        self.init_singers()
         self._startPos = QPoint(0, 0)
+
+        self.init_ui_components()
+        self.init_singers()
+
+        self.show()
+
+    def init_ui_components(self):
+        """初始化UI组件"""
         self.fast_btn = CreateFastBtn(self)
         self.fast_btn.create_btn()
-
-        self.back_expand = BackExpand(self)       # 按钮收缩侧边栏
-        self.show()
+        self.back_expand = BackExpand(self)  # 按钮收缩侧边栏
 
     def show_serial_config(self):
         self.serial_config_window = SerialUi()
         self.serial_config_window.show()
-        # self.serial_config_window.show()
 
     def show_instruction(self):
         self.instruction_window = InstructionUi()
@@ -44,9 +48,9 @@ class PyCom(QWidget, Ui_Form):
         self.serial_config_btn.clicked.connect(self.show_serial_config)
         self.send_instruction_btn.clicked.connect(self.show_instruction)
 
-    def clear_widget(self, line_widget):
+    def clear_widget(self, widget):
         """传入控件，清空内容"""
-        line_widget.clear()
+        widget.clear()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -64,14 +68,12 @@ class PyCom(QWidget, Ui_Form):
 
 
 class SerialUi(QWidget, Serial_Form):
-
     def __init__(self, parent=None):
         super(SerialUi, self).__init__(parent)
         self.setupUi(self)
 
 
 class InstructionUi(QWidget, Instruction_Form):
-
     def __init__(self, parent=None):
         super(InstructionUi, self).__init__(parent)
         self.setupUi(self)
