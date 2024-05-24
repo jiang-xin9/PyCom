@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit
 from ui.index import Ui_Form
 from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
@@ -19,14 +19,11 @@ class PyCom(QWidget, Ui_Form):
         self._isTracking = False
         self.init_singers()
         self._startPos = QPoint(0, 0)
-
         self.fast_btn = CreateFastBtn(self)
         self.fast_btn.create_btn()
 
-        self.back_expand = BackExpand(self)
+        self.back_expand = BackExpand(self)       # 按钮收缩侧边栏
         self.show()
-        self.serial_config_btn.clicked.connect(self.show_serial_config)
-        self.send_instruction_btn.clicked.connect(self.show_instruction)
 
     def show_serial_config(self):
         self.serial_config_window = SerialUi()
@@ -38,11 +35,14 @@ class PyCom(QWidget, Ui_Form):
         self.instruction_window.show()
 
     def init_singers(self):
+        """初始化信号连接"""
         self.close_btn.clicked.connect(self.close)
         self.min_btn.clicked.connect(self.showMinimized)
         self.max_btn.clicked.connect(self.showMaximized)
         self.clear_send_text.clicked.connect(lambda: self.clear_widget(self.command_line))
         self.clear_receive_text.clicked.connect(lambda: self.clear_widget(self.receive_textEdit))
+        self.serial_config_btn.clicked.connect(self.show_serial_config)
+        self.send_instruction_btn.clicked.connect(self.show_instruction)
 
     def clear_widget(self, line_widget):
         """传入控件，清空内容"""
