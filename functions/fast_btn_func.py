@@ -10,6 +10,7 @@ class CreateFastBtn:
         # 初始化一个垂直布局，并将其添加到 quick_frame 中
         self.vertical_layout = QVBoxLayout(self.ui.quick_frame)
         self.ui.quick_frame.setLayout(self.vertical_layout)
+        self.ui.save_config_btn.clicked.connect(self.get_ini_config)
 
     def create_button_clicked_closure(self, line_edit):
         """实现点击"""
@@ -25,15 +26,17 @@ class CreateFastBtn:
         if self.ui.command_line.text():
             self.ui.command_line.clear()
         self.ui.command_line.setText(text)
-        self.ui.send_btn.click()        # 点击按钮下发指令
+        self.ui.send_btn.click()  # 点击按钮下发指令
 
     def create_btn(self):
         """添加指令"""
         try:
-            commands = ConfigReader(command_config).get_value()  # 打包时用到路径
+            self.commands = ConfigReader(command_config)
         except Exception:
             path = sys_ + "\\" + "fast_btn_config.ini"
-            commands = ConfigReader(path).get_value()  # 打包时用到路径
+            self.commands = ConfigReader(path)
+        finally:
+            commands = self.commands.get_value()  # 打包时用到路径
 
         def create_command_row(command):
             row_layout = QHBoxLayout()
@@ -57,3 +60,9 @@ class CreateFastBtn:
         for command in commands:
             row_layout = create_command_row(command)
             self.vertical_layout.addLayout(row_layout)
+
+    def get_ini_config(self):
+        """保存更新后的ini配置信息"""
+        line_edits = self.ui.quick_frame.findChildren(QLineEdit)
+        texts = [line_edit.text() for line_edit in line_edits]
+        self.commands.save_data("Commands", texts)
