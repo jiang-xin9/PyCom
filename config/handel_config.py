@@ -5,6 +5,6 @@ sys_ = os.path.realpath(os.path.dirname(sys.argv[0]))
 LogTime = datetime.datetime.now().strftime("%H_%M_%S")
 
 command_config = os.path.join(Base_Path, 'config', 'fast_btn_config.ini')
-
+instruction_config = os.path.join(Base_Path, 'config', 'instruction_config.csv')
 
 
