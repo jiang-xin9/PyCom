@@ -41,6 +41,12 @@ class PyCom(QWidget, Ui_Form):
         self.close_btn.clicked.connect(self.close)
         self.min_btn.clicked.connect(self.showMinimized)
         self.max_btn.clicked.connect(self.showMaximized)
+        self.clear_send_text.clicked.connect(lambda: self.clear_widget(self.command_line))
+        self.clear_receive_text.clicked.connect(lambda: self.clear_widget(self.receive_textEdit))
+
+    def clear_widget(self, line_widget):
+        """传入控件，清空内容"""
+        line_widget.clear()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
