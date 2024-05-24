@@ -5,6 +5,7 @@ from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
 from ui.serial_config import Serial_Form
 from ui.instruction import Instruction_Form
+from functions.instruction_func import CreateInstruction
 
 
 class PyCom(QWidget, Ui_Form):
@@ -77,6 +78,8 @@ class InstructionUi(QWidget, Instruction_Form):
     def __init__(self, parent=None):
         super(InstructionUi, self).__init__(parent)
         self.setupUi(self)
+        self.create_instruction = CreateInstruction(self)
+        self.create_instruction.create_widget()
 
 
 if __name__ == '__main__':
