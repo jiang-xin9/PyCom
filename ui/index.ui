@@ -521,7 +521,7 @@ QToolButton::hover {
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QTextEdit" name="textEdit"/>
+                  <widget class="QTextEdit" name="receive_textEdit"/>
                  </item>
                 </layout>
                </widget>
@@ -660,7 +660,7 @@ QToolButton::hover {
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_5">
                      <item>
-                      <widget class="NewQPushButton" name="clear_send_text">
+                      <widget class="NewQPushButton" name="clear_receive_text">
                        <property name="minimumSize">
                         <size>
                          <width>75</width>
@@ -676,7 +676,7 @@ QToolButton::hover {
                       </widget>
                      </item>
                      <item>
-                      <widget class="NewQPushButton" name="clear_receive_text">
+                      <widget class="NewQPushButton" name="clear_send_text">
                        <property name="minimumSize">
                         <size>
                          <width>75</width>
