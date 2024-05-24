@@ -42,18 +42,24 @@ class ConfigReader:
         except (configparser.NoSectionError, configparser.NoOptionError):
             return default
 
-    def save_data(self, data):
+    def save_data(self, section, data):
         """
         保存数据到配置文件。
 
-        :param data: 要保存的数据，字典类型，格式为 {section: {option: value}}
+        :param section: 配置段的名称
+        :param data: 要保存的数据，列表类型
         """
         try:
-            for section, options in data.items():
-                if not self.config.has_section(section):
-                    self.config.add_section(section)
-                for option, value in options.items():
-                    self.config.set(section, option, value)
+            if not self.config.has_section(section):
+                self.config.add_section(section)
+
+            # 清除已有的数据
+            for key in list(self.config[section]):
+                self.config.remove_option(section, key)
+
+            # 保存新的数据
+            for i, command in enumerate(data, start=1):
+                self.config.set(section, f'command{i}', command)
 
             with open(self.file_path, 'w') as configfile:
                 self.config.write(configfile)
