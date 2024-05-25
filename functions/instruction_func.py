@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QHBoxLayout, QLineEdit, QLabel
 from functions.tool import Tool
 from config.handel_config import sys_, instruction_config
+from coustom_ui.fixedlabel import FixedLabel
+from coustom_ui.lineEdit import NewLineEdit
 
 
 class CreateInstruction:
@@ -34,14 +36,14 @@ class CreateInstruction:
             self.commands = self.tool.read_csv_by_command(path)  # 打包时用到路径
 
         for command in self.commands:
-            print(command)
             # 为每个命令创建一个水平布局
             row_layout = QHBoxLayout()
-            line_edit = QLineEdit(command[0])
-            label_timer = QLabel(command[1])
-            label_timer.setFixedSize(100,30)
-            label_send = QLabel("待发送")
-            label_timer.setFixedSize(80, 30)
+            line_edit = NewLineEdit(command[0])
+            line_edit.setFixedHeight(30)
+            label_timer = NewLineEdit(command[1])
+            label_timer.setFixedSize(80,30)
+            label_send = FixedLabel("待发送")
+            # label_timer.setFixedSize(40, 30)
 
             # 注意lambda函数中传递line_edit作为参数来避免late binding问题
             # label.clicked.connect(lambda checked, le=line_edit: self.create_instruction_closure(le)())
