@@ -3,9 +3,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit
 from ui.index import Ui_Form
 from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
-from ui.serial_config import Serial_Form
-from ui.instruction import Instruction_Form
-from functions.instruction_func import CreateInstruction
+from functions.create_serial_func import CreateSerialUi
+from functions.create_instruction_func import CreateInstruction
 
 
 class PyCom(QWidget, Ui_Form):
@@ -32,12 +31,13 @@ class PyCom(QWidget, Ui_Form):
         self.back_expand = BackExpand(self)  # 按钮收缩侧边栏
 
     def show_serial_config(self):
-        self.serial_config_window = SerialUi()
+        self.serial_config_window = CreateSerialUi()
         self.serial_config_window.show()
 
     def show_instruction(self):
-        self.instruction_window = InstructionUi()
+        self.instruction_window = CreateInstruction()
         self.instruction_window.show()
+        self.instruction_window.create_widget()
 
     def init_singers(self):
         """初始化信号连接"""
@@ -66,20 +66,6 @@ class PyCom(QWidget, Ui_Form):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self._isTracking = False
-
-
-class SerialUi(QWidget, Serial_Form):
-    def __init__(self, parent=None):
-        super(SerialUi, self).__init__(parent)
-        self.setupUi(self)
-
-
-class InstructionUi(QWidget, Instruction_Form):
-    def __init__(self, parent=None):
-        super(InstructionUi, self).__init__(parent)
-        self.setupUi(self)
-        self.create_instruction = CreateInstruction(self)
-        self.create_instruction.create_widget()
 
 
 if __name__ == '__main__':
