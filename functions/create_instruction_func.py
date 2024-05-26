@@ -6,14 +6,14 @@ from coustom_ui.lineEdit import NewLineEdit
 from ui.instruction import Instruction_Form
 
 
-class CreateInstruction(QWidget, Instruction_Form):
+class CreateInstructionUi(QWidget, Instruction_Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.tool = Tool()
 
     def create_instruction_closure(self, line_edit):
-        """实现点击"""
+        """添加实现点击"""
 
         def button_clicked():
             line_edit_text = line_edit.text()
@@ -45,9 +45,6 @@ class CreateInstruction(QWidget, Instruction_Form):
             label_timer.setFixedSize(80, 30)
             label_send = FixedLabel("待发送")
             # label_timer.setFixedSize(40, 30)
-
-            # 注意lambda函数中传递line_edit作为参数来避免late binding问题
-            # label.clicked.connect(lambda checked, le=line_edit: self.create_instruction_closure(le)())
 
             # 将控件添加到水平布局
             row_layout.addWidget(line_edit)

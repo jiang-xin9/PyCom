@@ -1,10 +1,11 @@
 from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit
+from PyQt5.QtWidgets import QApplication, QWidget
 from ui.index import Ui_Form
+from functions.tool import Tool
 from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
 from functions.create_serial_func import CreateSerialUi
-from functions.create_instruction_func import CreateInstruction
+from functions.create_instruction_func import CreateInstructionUi
 
 
 class PyCom(QWidget, Ui_Form):
@@ -19,6 +20,7 @@ class PyCom(QWidget, Ui_Form):
         self._isTracking = False
         self._startPos = QPoint(0, 0)
 
+        self.tool = Tool()
         self.init_ui_components()
         self.init_singers()
 
@@ -35,7 +37,7 @@ class PyCom(QWidget, Ui_Form):
         self.serial_config_window.show()
 
     def show_instruction(self):
-        self.instruction_window = CreateInstruction()
+        self.instruction_window = CreateInstructionUi()
         self.instruction_window.show()
         self.instruction_window.create_widget()
 
@@ -44,14 +46,10 @@ class PyCom(QWidget, Ui_Form):
         self.close_btn.clicked.connect(self.close)
         self.min_btn.clicked.connect(self.showMinimized)
         self.max_btn.clicked.connect(self.showMaximized)
-        self.clear_send_text.clicked.connect(lambda: self.clear_widget(self.command_line))
-        self.clear_receive_text.clicked.connect(lambda: self.clear_widget(self.receive_textEdit))
+        self.clear_send_text.clicked.connect(lambda: self.tool.clear_widget(self.command_line))
+        self.clear_receive_text.clicked.connect(lambda: self.tool.clear_widget(self.receive_textEdit))
         self.serial_config_btn.clicked.connect(self.show_serial_config)
         self.send_instruction_btn.clicked.connect(self.show_instruction)
-
-    def clear_widget(self, widget):
-        """传入控件，清空内容"""
-        widget.clear()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
