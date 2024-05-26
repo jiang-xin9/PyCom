@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QHBoxLayout, QLineEdit, QLabel, QWidget
+from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QHBoxLayout, QWidget
 from functions.tool import Tool
 from config.handel_config import sys_, instruction_config
 from coustom_ui.fixedlabel import FixedLabel
@@ -11,6 +12,20 @@ class CreateInstructionUi(QWidget, Instruction_Form):
         super().__init__()
         self.setupUi(self)
         self.tool = Tool()
+        self.init_singers()
+
+        # 初始化定时器
+        # self.timer = QTimer(self)
+        # self.timer.timeout.connect(self.update_labels_background)
+        # self.timer.start(500)  # 每500毫秒触发一次
+
+    def init_singers(self):
+        """初始化信号槽"""
+        self.start_btn.clicked.connect(self.update_style)
+
+    def update_style(self):
+        # 67C23A
+        pass
 
     def create_instruction_closure(self, line_edit):
         """添加实现点击"""
