@@ -220,4 +220,4 @@ class Serial_Form(object):
         self.cancel_btn.setText(_translate("Form", "Cancel"))
 from coustom_ui.combox import NewComboBox
 from coustom_ui.pushbutton import NewQPushButton
-from . import images
+from . import resources
