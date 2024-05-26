@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>PyCom</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/icon/icon.ico</normaloff>:/icons/icon/icon.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -891,14 +895,14 @@ QPushButton::hover {
  </widget>
  <customwidgets>
   <customwidget>
-   <class>CustomToggleButton</class>
-   <extends>QCheckBox</extends>
-   <header>customtogglebutton.h</header>
-  </customwidget>
-  <customwidget>
    <class>NewQPushButton</class>
    <extends>QPushButton</extends>
    <header>newqpushbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CustomToggleButton</class>
+   <extends>QCheckBox</extends>
+   <header>customtogglebutton.h</header>
   </customwidget>
  </customwidgets>
  <resources>
