@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QHBoxLayout, QLineEdit, QPushButton, QVBoxLayout
 from config.read_ini import ConfigReader
 from config.handel_config import sys_, command_config
+from coustom_ui.message_prompt import CustomMessageBox
 
 
 class CreateFastBtn:
@@ -66,3 +67,4 @@ class CreateFastBtn:
         line_edits = self.ui.quick_frame.findChildren(QLineEdit)
         texts = [line_edit.text() for line_edit in line_edits]
         self.commands.save_data("Commands", texts)
+        CustomMessageBox.show_box("Save Success", "success", self.ui)
