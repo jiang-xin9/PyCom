@@ -24,6 +24,8 @@ class PyCom(QWidget, Ui_Form):
         self.init_ui_components()
         self.init_singers()
 
+        self.is_maximized = False  # 用于跟踪窗口是否最大化
+
         self.show()
 
     def init_ui_components(self):
@@ -45,11 +47,20 @@ class PyCom(QWidget, Ui_Form):
         """初始化信号连接"""
         self.close_btn.clicked.connect(self.close)
         self.min_btn.clicked.connect(self.showMinimized)
-        self.max_btn.clicked.connect(self.showMaximized)
+        self.max_btn.clicked.connect(self.toggle_maximize_restore)
         self.clear_send_text.clicked.connect(lambda: self.tool.clear_widget(self.command_line))
         self.clear_receive_text.clicked.connect(lambda: self.tool.clear_widget(self.receive_textEdit))
         self.serial_config_btn.clicked.connect(self.show_serial_config)
         self.send_instruction_btn.clicked.connect(self.show_instruction)
+
+    def toggle_maximize_restore(self):
+        """切换窗口的最大化和恢复"""
+        if self.is_maximized:
+            self.showNormal()
+            self.is_maximized = False
+        else:
+            self.showMaximized()
+            self.is_maximized = True
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
