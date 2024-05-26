@@ -13,6 +13,9 @@ class Tool:
             reader = csv.reader(csvfile)
             return [row for row in reader]
 
+    def clear_widget(self, widget):
+        """传入控件，清空内容"""
+        widget.clear()
 
 # 使用示例
 # if __name__ == '__main__':
