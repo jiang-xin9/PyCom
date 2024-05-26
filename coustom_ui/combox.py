@@ -64,7 +64,7 @@ class NewComboBox(QComboBox):
                 margin-left: 5px; /* Adjust the margin to align the arrow */
             }
             QComboBox::down-arrow:on { /* When the combo box is open */
-                image: url(:icons/icon/EpArrowUp.png.png); /* Provide the path to the up arrow icon */
+                image: url(:icons/icon/EpArrowUp.png); /* Provide the path to the up arrow icon */
             }
             QComboBox QAbstractItemView {
                 border: 1px solid #ced4da;
