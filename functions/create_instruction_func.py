@@ -5,6 +5,7 @@ from config.handel_config import sys_, instruction_config
 from coustom_ui.fixedlabel import FixedLabel
 from coustom_ui.lineEdit import NewLineEdit
 from ui.instruction import Instruction_Form
+from coustom_ui.message_prompt import CustomMessageBox
 
 
 class CreateInstructionUi(QWidget, Instruction_Form):
@@ -21,7 +22,30 @@ class CreateInstructionUi(QWidget, Instruction_Form):
 
     def init_singers(self):
         """初始化信号槽"""
+        self.file_path_line.setCursorPosition(0)  # 设置光标位置为最左边
+        self.start_btn.setEnabled(False)
         self.start_btn.clicked.connect(self.update_style)
+        # 获取文件路径
+        self.get_file_path.clicked.connect(lambda line:self.tool.get_file_path(self.file_path_line))
+        self.file_path_line.textChanged.connect(self.handle_file_path)
+
+    def handle_file_path(self):
+        """处理获取到的路径"""
+        path = self.file_path_line.text()
+        if '/' in path:
+            csv = path.split('/')
+        elif '//' in path:
+            csv = path.split("//")
+        else:
+            csv = path.split("\\")
+        self.csv_message(path, csv)
+
+    def csv_message(self,path, text):
+        if ".csv" not in text[-1]:
+            CustomMessageBox.show_box("非csv文件，无法加载", "warning", self)
+        else:
+            self.start_btn.setEnabled(True)
+            self.create_widget(self.tool.read_csv_by_command(path))
 
     def update_style(self):
         # 67C23A
@@ -43,28 +67,23 @@ class CreateInstructionUi(QWidget, Instruction_Form):
         self.command_line.setText(text)
         self.send_btn.click()  # 点击按钮下发指令
 
-    def create_widget(self):
+    def create_widget(self, commands):
         """添加指令"""
-        try:
-            self.commands = self.tool.read_csv_by_command(instruction_config)
-        except Exception:
-            path = sys_ + "\\" + "instruction_config.csv"
-            self.commands = self.tool.read_csv_by_command(path)  # 打包时用到路径
+        if commands:
+            for command in commands:
+                # 为每个命令创建一个水平布局
+                row_layout = QHBoxLayout()
+                line_edit = NewLineEdit(command[0])
+                line_edit.setFixedHeight(30)
+                label_timer = NewLineEdit(command[1])
+                label_timer.setFixedSize(80, 30)
+                label_send = FixedLabel("待发送")
+                # label_timer.setFixedSize(40, 30)
 
-        for command in self.commands:
-            # 为每个命令创建一个水平布局
-            row_layout = QHBoxLayout()
-            line_edit = NewLineEdit(command[0])
-            line_edit.setFixedHeight(30)
-            label_timer = NewLineEdit(command[1])
-            label_timer.setFixedSize(80, 30)
-            label_send = FixedLabel("待发送")
-            # label_timer.setFixedSize(40, 30)
+                # 将控件添加到水平布局
+                row_layout.addWidget(line_edit)
+                row_layout.addWidget(label_timer)
+                row_layout.addWidget(label_send)
 
-            # 将控件添加到水平布局
-            row_layout.addWidget(line_edit)
-            row_layout.addWidget(label_timer)
-            row_layout.addWidget(label_send)
-
-            # 将水平布局添加到已存在的 frame 的垂直布局中
-            self.frame_2.layout().addLayout(row_layout)  # 使用 layout() 方法获取现有布局并添加内容
+                # 将水平布局添加到已存在的 frame 的垂直布局中
+                self.frame_2.layout().addLayout(row_layout)  # 使用 layout() 方法获取现有布局并添加内容
