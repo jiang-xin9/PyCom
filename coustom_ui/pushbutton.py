@@ -16,17 +16,17 @@ class NewQPushButton(QPushButton):
         self.default_style = """
             QPushButton {
                 border: 0.5px solid rgb(64, 158, 255);
-                background-color: rgb(236, 245, 255);
-                border-radius: 5px;
-                color: rgb(64, 158, 255);
+                background-color: rgb(64, 158, 255);
+                border-radius: 4px;
+                color: rgb(255, 255, 255);
                 padding: 5px 10px;
             }
         """
         self.hover_style = """
             QPushButton {
-                border: 2px solid #8f8f91;
-                border-radius: 5px;
-                background-color: rgb(64, 158, 255);
+                border: 1.5px solid #8f8f91;
+                border-radius: 4px;
+                background-color: rgb(121, 187, 255);
                 color: rgb(255, 255, 255);
                 padding: 5px 10px;
             }
@@ -120,8 +120,8 @@ class NewQPushButton(QPushButton):
         self._color = value
         self.setStyleSheet(f"""
             QPushButton {{
-                border: 2px solid #8f8f91;
-                border-radius: 5px;
+                border: 1px solid #8f8f91;
+                border-radius: 4px;
                 background-color: {value.name()};
                 padding: 5px 10px;
             }}
