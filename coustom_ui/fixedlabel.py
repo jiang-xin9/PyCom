@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QLabel
 
+
 class FixedLabel(QLabel):
     def __init__(self, text="", parent=None):
         super().__init__(text, parent)
@@ -7,17 +8,16 @@ class FixedLabel(QLabel):
 
         self.default_style = """
             QLabel {
-                border: 0.5px solid rgb(64, 158, 255);
-                background-color: rgb(255, 255, 255);
+                background-color: #F56C6C;
                 border-radius: 4px;
-                color: rgb(64, 158, 255);
+                color: rgb(255, 255, 255);
                 padding: 5px 10px;
-                font-size: 10px;
+                font-size: 12px;
                 font-family: 'Microsoft YaHei';
             }
         """
         self.setStyleSheet(self.default_style)
-        self.setFixedSize(60, 30) # 设置固定高度
+        self.setFixedSize(60, 30)  # 设置固定高度
         self.adjustSize()
 
     def setText(self, text):

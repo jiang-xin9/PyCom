@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>444</height>
+    <width>351</width>
+    <height>476</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,6 +38,12 @@
        <height>30</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -61,12 +67,18 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="file_path_line">
         <property name="minimumSize">
          <size>
           <width>0</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
         </property>
         <property name="styleSheet">
          <string notr="true">QLineEdit {
@@ -77,12 +89,24 @@
        </widget>
       </item>
       <item>
-       <widget class="NewQPushButton" name="pushButton">
+       <widget class="NewQPushButton" name="get_file_path">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>80</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
         </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
@@ -93,12 +117,24 @@
        </widget>
       </item>
       <item>
-       <widget class="NewQPushButton" name="pushButton_2">
+       <widget class="NewQPushButton" name="start_btn">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>80</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
         </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
@@ -121,8 +157,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>318</width>
-        <height>404</height>
+        <width>349</width>
+        <height>436</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">

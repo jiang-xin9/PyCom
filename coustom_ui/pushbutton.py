@@ -19,7 +19,6 @@ class NewQPushButton(QPushButton):
                 background-color: rgb(64, 158, 255);
                 border-radius: 4px;
                 color: rgb(255, 255, 255);
-                padding: 5px 10px;
             }
         """
         self.hover_style = """
@@ -28,7 +27,6 @@ class NewQPushButton(QPushButton):
                 border-radius: 4px;
                 background-color: rgb(121, 187, 255);
                 color: rgb(255, 255, 255);
-                padding: 5px 10px;
             }
         """
         self.setStyleSheet(self.default_style)
@@ -123,7 +121,6 @@ class NewQPushButton(QPushButton):
                 border: 1px solid #8f8f91;
                 border-radius: 4px;
                 background-color: {value.name()};
-                padding: 5px 10px;
             }}
         """)
 
