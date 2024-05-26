@@ -1,7 +1,7 @@
 import sys
-from PyQt5.QtCore import QPropertyAnimation, Qt, pyqtProperty, QEasingCurve, QRect
+from PyQt5.QtCore import QPropertyAnimation, Qt, pyqtProperty, QEasingCurve
 from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QLabel, QGraphicsDropShadowEffect, QWidget
+from PyQt5.QtWidgets import QPushButton, QGraphicsDropShadowEffect
 
 
 class NewQPushButton(QPushButton):
