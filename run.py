@@ -41,7 +41,6 @@ class PyCom(QWidget, Ui_Form):
     def show_instruction(self):
         self.instruction_window = CreateInstructionUi()
         self.instruction_window.show()
-        self.instruction_window.create_widget()
 
     def init_singers(self):
         """初始化信号连接"""
