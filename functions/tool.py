@@ -1,5 +1,7 @@
 import csv
 
+from PyQt5.QtWidgets import QFileDialog
+
 
 class Tool:
 
@@ -9,13 +11,25 @@ class Tool:
 
         :return: 一个字典，键为列名，值为对应列的数据列表
         """
-        with open(file_path, newline='', encoding='utf-8') as csvfile:
-            reader = csv.reader(csvfile)
-            return [row for row in reader]
+        try:
+            with open(file_path, newline='', encoding='utf-8') as csvfile:
+                reader = csv.reader(csvfile)
+                return [row for row in reader]
+        except FileNotFoundError:
+            pass
 
     def clear_widget(self, widget):
         """传入控件，清空内容"""
         widget.clear()
+
+    def get_file_path(self, widget_line_name):
+        """保存路径+名称"""
+        options = QFileDialog.Options()
+        file_name, _ = QFileDialog.getOpenFileName(None, "选择文件", "",
+                                                   "All Files (*);;Text Files (*.txt);;Image Files (*.log)",
+                                                   options=options)
+        if file_name:
+            widget_line_name.setText(file_name)
 
 # 使用示例
 # if __name__ == '__main__':
