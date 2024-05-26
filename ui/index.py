@@ -26,14 +26,14 @@ class Ui_Form(object):
         self.top_Frame = QtWidgets.QFrame(Form)
         self.top_Frame.setMinimumSize(QtCore.QSize(0, 25))
         self.top_Frame.setStyleSheet("QFrame#top_Frame {\n"
-"    background-color: rgb(200, 224, 228);\n"
-"}\n"
-"QToolButton::hover {\n"
-"    background-color: rgb(121, 164, 172);\n"
-"}\n"
-"QToolButton {\n"
-"    border: none;\n"
-"}")
+                                     "    background-color: rgb(200, 224, 228);\n"
+                                     "}\n"
+                                     "QToolButton::hover {\n"
+                                     "    background-color: rgb(121, 164, 172);\n"
+                                     "}\n"
+                                     "QToolButton {\n"
+                                     "    border: none;\n"
+                                     "}")
         self.top_Frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.top_Frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.top_Frame.setObjectName("top_Frame")
@@ -82,10 +82,10 @@ class Ui_Form(object):
         self.close_btn.setMinimumSize(QtCore.QSize(20, 20))
         self.close_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.close_btn.setStyleSheet("\n"
-"QToolButton::hover {\n"
-"    background-color: rgb(255, 0, 0);\n"
-"}\n"
-"")
+                                     "QToolButton::hover {\n"
+                                     "    background-color: rgb(255, 0, 0);\n"
+                                     "}\n"
+                                     "")
         self.close_btn.setText("")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(":/icons/icon/EpClose.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -101,8 +101,8 @@ class Ui_Form(object):
         sizePolicy.setHeightForWidth(self.buttomFrame.sizePolicy().hasHeightForWidth())
         self.buttomFrame.setSizePolicy(sizePolicy)
         self.buttomFrame.setStyleSheet("QFrame#buttomFrame {\n"
-"    background-color: rgb(48, 54, 67);\n"
-"}")
+                                       "    background-color: rgb(48, 54, 67);\n"
+                                       "}")
         self.buttomFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.buttomFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.buttomFrame.setObjectName("buttomFrame")
@@ -114,27 +114,27 @@ class Ui_Form(object):
         self.tag_frame.setMinimumSize(QtCore.QSize(0, 31))
         self.tag_frame.setMaximumSize(QtCore.QSize(16777215, 30))
         self.tag_frame.setStyleSheet("QToolButton {\n"
-"    border: none;\n"
-"}\n"
-"QFrame#tag_frame {\n"
-"    \n"
-"    background-color: rgb(255, 255, 255);\n"
-"}\n"
-"QToolButton {\n"
-"    background-color: rgb(236, 245, 255);\n"
-"    border-radius: 5px;\n"
-"    color: rgb(64, 158, 255);\n"
-"    border: 0.5px solid rgb(64, 158, 255); \n"
-"}\n"
-"QToolButton::hover {\n"
-"    background-color: rgb(64, 158, 255);\n"
-"    color: rgb(255, 255, 255);\n"
-"}")
+                                     "    border: none;\n"
+                                     "}\n"
+                                     "QFrame#tag_frame {\n"
+                                     "    \n"
+                                     "    background-color: rgb(255, 255, 255);\n"
+                                     "}\n"
+                                     "QToolButton {\n"
+                                     "    background-color: rgb(236, 245, 255);\n"
+                                     "    border-radius: 5px;\n"
+                                     "    color: rgb(64, 158, 255);\n"
+                                     "    border: 0.5px solid rgb(64, 158, 255); \n"
+                                     "}\n"
+                                     "QToolButton::hover {\n"
+                                     "    background-color: rgb(64, 158, 255);\n"
+                                     "    color: rgb(255, 255, 255);\n"
+                                     "}")
         self.tag_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.tag_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.tag_frame.setObjectName("tag_frame")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tag_frame)
-        self.horizontalLayout_2.setContentsMargins(3, 0, 0, 0)
+        self.horizontalLayout_2.setContentsMargins(3, 0, 0, 3)
         self.horizontalLayout_2.setSpacing(3)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.frame = QtWidgets.QFrame(self.tag_frame)
@@ -145,7 +145,7 @@ class Ui_Form(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame)
-        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 3)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.serial_config_btn = NewQPushButton(self.frame)
         self.serial_config_btn.setMinimumSize(QtCore.QSize(0, 29))
@@ -345,20 +345,20 @@ class Ui_Form(object):
         self.quick_frame.setMaximumSize(QtCore.QSize(180, 16777215))
         self.quick_frame.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.quick_frame.setStyleSheet("QFrame#quick_frame{\n"
-"    background-color: rgb(255, 255, 255);\n"
-"    border-radius: 3px;\n"
-"}\n"
-"QPushButton {\n"
-"    background-color: rgb(64, 158, 255);\n"
-"    border-radius: 3px;\n"
-"    color: rgb(255, 255, 255);\n"
-"    font: 12px Microsoft YaHei;\n"
-"}\n"
-"QPushButton::hover {\n"
-"    background-color: rgb(121, 187, 255);\n"
-"    border-radius: 3px;\n"
-"}\n"
-"")
+                                       "    background-color: rgb(255, 255, 255);\n"
+                                       "    border-radius: 3px;\n"
+                                       "}\n"
+                                       "QPushButton {\n"
+                                       "    background-color: rgb(64, 158, 255);\n"
+                                       "    border-radius: 3px;\n"
+                                       "    color: rgb(255, 255, 255);\n"
+                                       "    font: 12px Microsoft YaHei;\n"
+                                       "}\n"
+                                       "QPushButton::hover {\n"
+                                       "    background-color: rgb(121, 187, 255);\n"
+                                       "    border-radius: 3px;\n"
+                                       "}\n"
+                                       "")
         self.quick_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.quick_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.quick_frame.setObjectName("quick_frame")
@@ -387,6 +387,8 @@ class Ui_Form(object):
         self.check_hex_send.setText(_translate("Form", "Hex发送"))
         self.check_save_log.setText(_translate("Form", "保存日志"))
         self.check_enter.setText(_translate("Form", "回车换行"))
+
+
 from coustom_ui.checkbox import CustomToggleButton
 from coustom_ui.pushbutton import NewQPushButton
 from . import resources

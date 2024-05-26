@@ -304,7 +304,7 @@ QToolButton::hover {
           <number>0</number>
          </property>
          <property name="bottomMargin">
-          <number>0</number>
+          <number>3</number>
          </property>
          <item>
           <widget class="QFrame" name="frame">
@@ -329,7 +329,7 @@ QToolButton::hover {
            <property name="frameShadow">
             <enum>QFrame::Raised</enum>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0">
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -340,7 +340,7 @@ QToolButton::hover {
              <number>0</number>
             </property>
             <property name="bottomMargin">
-             <number>0</number>
+             <number>3</number>
             </property>
             <item>
              <widget class="NewQPushButton" name="serial_config_btn">
@@ -525,7 +525,14 @@ QToolButton::hover {
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QTextEdit" name="receive_textEdit"/>
+                  <widget class="QTextEdit" name="receive_textEdit">
+                   <property name="font">
+                    <font>
+                     <family>微软雅黑</family>
+                     <pointsize>10</pointsize>
+                    </font>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </widget>
