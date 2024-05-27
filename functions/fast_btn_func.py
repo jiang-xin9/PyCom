@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QHBoxLayout, QLineEdit, QPushButton, QVBoxLayout
 from config.read_ini import ConfigReader
-from config.handel_config import sys_, command_config
+from config.handel_config import command_config
 from coustom_ui.message_prompt import CustomMessageBox
 
 
@@ -34,8 +34,9 @@ class CreateFastBtn:
         try:
             self.commands = ConfigReader(command_config)
         except Exception:
-            path = sys_ + "\\" + "fast_btn_config.ini"
-            self.commands = ConfigReader(path)
+            # path = sys_ + "\\" + "fast_btn_config.ini"
+            # self.commands = ConfigReader(path)
+            return None
         finally:
             commands = self.commands.get_value()  # 打包时用到路径
 

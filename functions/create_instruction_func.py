@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QHBoxLayout, QWidget
 from functions.tool import Tool
-from config.handel_config import sys_, instruction_config
+from config.handel_config import instruction_config
 from coustom_ui.fixedlabel import FixedLabel
 from coustom_ui.lineEdit import NewLineEdit
 from ui.instruction import Instruction_Form
@@ -14,6 +14,7 @@ class CreateInstructionUi(QWidget, Instruction_Form):
         self.setupUi(self)
         self.tool = Tool()
         self.init_singers()
+        self.default_command()
 
         # 初始化定时器
         # self.timer = QTimer(self)
@@ -67,8 +68,17 @@ class CreateInstructionUi(QWidget, Instruction_Form):
         self.command_line.setText(text)
         self.send_btn.click()  # 点击按钮下发指令
 
+    def default_command(self):
+        try:
+            # path = sys_ + "\\" + "instruction_config.csv"
+            commands = self.tool.read_csv_by_command(instruction_config)  # 打包时用到路径
+            self.create_widget(commands)
+        except:
+            return None
+
     def create_widget(self, commands):
         """添加指令"""
+
         if commands:
             for command in commands:
                 # 为每个命令创建一个水平布局
