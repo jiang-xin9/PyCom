@@ -74,7 +74,7 @@ class NewComboBox(QComboBox):
                 selection-background-color: rgb(245,245,250);
                 selection-color: #000000;
                 font-size: 14px;
-                color: rgb(125,126,130);
+                color: rgb(11,113,116);
                 background-color: white; /* Match the background color */
                 border-top-left-radius: 4px; /* Rounded top-left corner */
                 border-top-right-radius: 4px; /* Rounded top-right corner */
