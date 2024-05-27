@@ -4,7 +4,7 @@ from ui.index import Ui_Form
 from functions.tool import Tool
 from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
-from functions.create_serial_func import CreateSerialUi
+from functions.serial_config import SerialConfig
 from functions.create_instruction_func import CreateInstructionUi
 
 
@@ -21,6 +21,7 @@ class PyCom(QWidget, Ui_Form):
         self._startPos = QPoint(0, 0)
 
         self.tool = Tool()
+        self.serial = SerialConfig(self)
         self.init_ui_components()
         self.init_singers()
 
@@ -34,10 +35,6 @@ class PyCom(QWidget, Ui_Form):
         self.fast_btn.create_btn()
         self.back_expand = BackExpand(self)  # 按钮收缩侧边栏
 
-    def show_serial_config(self):
-        self.serial_config_window = CreateSerialUi()
-        self.serial_config_window.show()
-
     def show_instruction(self):
         self.instruction_window = CreateInstructionUi()
         self.instruction_window.show()
@@ -49,7 +46,6 @@ class PyCom(QWidget, Ui_Form):
         self.max_btn.clicked.connect(self.toggle_maximize_restore)
         self.clear_send_text.clicked.connect(lambda: self.tool.clear_widget(self.command_line))
         self.clear_receive_text.clicked.connect(lambda: self.tool.clear_widget(self.receive_textEdit))
-        self.serial_config_btn.clicked.connect(self.show_serial_config)
         self.send_instruction_btn.clicked.connect(self.show_instruction)
 
     def toggle_maximize_restore(self):
