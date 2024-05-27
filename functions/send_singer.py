@@ -8,23 +8,23 @@ class SignalEmitter(QObject):
     def __init__(self):
         super().__init__()
 
-    def error_signal(self, message, ui):
+    def error_signal(self, message):
         """
         发送信号的方法。
 
         :param message: 要发送的消息
         """
-        self.universal_signal.emit(message)
-        CustomMessageBox.show_box(message, "error", ui)
+        # self.universal_signal.emit(message)
+        CustomMessageBox.show_box(message, "error")
 
-    def success_signal(self, message, ui):
-        self.universal_signal.emit(message)
-        CustomMessageBox.show_box(message, "success", ui)
+    def success_signal(self, message):
+        # self.universal_signal.emit(message)
+        CustomMessageBox.show_box(message, "success")
 
-    def custom_signal(self, message, ui):
-        self.universal_signal.emit(message)
-        CustomMessageBox.show_box(message, "custom", ui)
+    def custom_signal(self, message):
+        # self.universal_signal.emit(message)
+        CustomMessageBox.show_box(message, "custom")
 
-    def warning_signal(self, message, ui):
-        self.universal_signal.emit(message)
-        CustomMessageBox.show_box(message, "warning", ui)
+    def warning_signal(self, message):
+        # self.universal_signal.emit(message)
+        CustomMessageBox.show_box(message, "warning")
