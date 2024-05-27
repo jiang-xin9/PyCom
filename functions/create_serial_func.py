@@ -6,7 +6,6 @@ import serial.tools.list_ports
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
 from ui.serial_config import Serial_Form
-from functions.serial_thread import SerialThread
 
 
 class CreateSerialUi(QWidget, Serial_Form):
@@ -25,7 +24,7 @@ class CreateSerialUi(QWidget, Serial_Form):
         self.Com_Close_Button.clicked.connect(self.close_port)
 
     def ok(self):
-        self.sava_config()
+        # self.sava_config()
         self.close()
 
     def sava_config(self):
@@ -44,10 +43,10 @@ class CreateSerialUi(QWidget, Serial_Form):
     def open_port(self):
         """打开串口"""
         port = self.Com_Name_Combo.currentText()  # 串口
-        baudrate = int(self.Com_Baud_Combo.currentText())  # 波特率
+        baud = int(self.Com_Baud_Combo.currentText())  # 波特率
         if port:
-            self.serial_thread.open_serial_port(port, baudrate)
-            self.port_configured.emit(port, baudrate)
+            self.serial_thread.open_serial_port(port, baud)
+            self.port_configured.emit(port, baud)
 
     def close_port(self):
         """关闭串口"""

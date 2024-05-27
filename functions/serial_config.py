@@ -10,10 +10,10 @@ class SerialConfig:
         self.ui.send_btn.clicked.connect(self.send_message)
 
         self.serial_thread = SerialThread()
-        self.serial_thread.worker.data_received.connect(self.display_message)
+        self.serial_thread.worker.received_data.connect(self.display_message)
         self.serial_thread.worker.data_sent.connect(self.display_sent_message)
-        self.serial_thread.worker.connection_made.connect(self.on_connection_made)
-        self.serial_thread.worker.connection_lost.connect(self.on_connection_lost)
+        self.serial_thread.worker.serial_connection_made.connect(self.on_connection_made)
+        self.serial_thread.worker.serial_connection_lost.connect(self.on_connection_lost)
         self.serial_thread.worker.error_occurred.connect(self.display_error)
 
         self.serial_ui = CreateSerialUi(self.serial_thread)
@@ -44,7 +44,7 @@ class SerialConfig:
         self.ui.receive_textEdit.append("Closed port")
 
     def display_error(self, error):
-        print("error", error)
+        self.ui.receive_textEdit.append(str(error))
 
     def closeEvent(self, event):
         self.serial_thread.stop()

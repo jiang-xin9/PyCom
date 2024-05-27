@@ -7,13 +7,12 @@ class ConfigReader:
     def __init__(self, file_path):
         """
         初始化 ConfigReader 对象。
-
         :param file_path: INI 配置文件的路径
         """
         self.config = configparser.ConfigParser()
         self.file_path = file_path
         self._read_config()
-        self.signal_emitter = SignalEmitter()
+        # self.signal_emitter = SignalEmitter()
 
     def _read_config(self):
         """
@@ -22,7 +21,8 @@ class ConfigReader:
         try:
             self.config.read(self.file_path)
         except Exception as e:
-            self.signal_emitter.send_signal(f"Failed to file: {e}")
+            print(f"Failed to read config file: {e}")
+            # self.signal_emitter.send_signal(f"Failed to file: {e}")
 
     def get_value(self, default=None):
         """
@@ -63,9 +63,10 @@ class ConfigReader:
 
             with open(self.file_path, 'w') as configfile:
                 self.config.write(configfile)
-            self.signal_emitter.send_signal("Configuration saved successfully.")
+            # self.signal_emitter.send_signal("Configuration saved successfully.")
         except Exception as e:
-            self.signal_emitter.send_signal(f"Failed to save configuration: {e}")
+            print(f"Failed to save configuration: {e}")
+            # self.signal_emitter.send_signal(f"Failed to save configuration: {e}")
 
 # if __name__ == '__main__':
 #     config_reader = ConfigReader('fast_btn_config.ini')

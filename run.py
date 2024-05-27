@@ -6,6 +6,7 @@ from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
 from functions.serial_config import SerialConfig
 from functions.create_instruction_func import CreateInstructionUi
+from functions.send_singer import SignalEmitter
 
 
 class PyCom(QWidget, Ui_Form):
