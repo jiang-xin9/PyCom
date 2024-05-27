@@ -68,4 +68,4 @@ class CreateFastBtn:
         line_edits = self.ui.quick_frame.findChildren(QLineEdit)
         texts = [line_edit.text() for line_edit in line_edits]
         self.commands.save_data("Commands", texts)
-        CustomMessageBox.show_box("Save Success", "success", self.ui)
+        CustomMessageBox.show_box("Save Success", "success")

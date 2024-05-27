@@ -1,6 +1,6 @@
 from functions.serial_thread import SerialThread
 from functions.create_serial_func import CreateSerialUi
-
+from coustom_ui.message_prompt import CustomMessageBox
 
 class SerialConfig:
     def __init__(self, ui):
@@ -39,6 +39,7 @@ class SerialConfig:
 
     def on_connection_made(self):
         self.ui.receive_textEdit.append(f"Opened port {self.port} at {self.baudrate} baud")
+        CustomMessageBox.show_box("Success", "success")
 
     def on_connection_lost(self):
         self.ui.receive_textEdit.append("Closed port")
