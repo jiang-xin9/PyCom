@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1118</width>
+    <width>1123</width>
     <height>689</height>
    </rect>
   </property>
@@ -304,7 +304,7 @@ QToolButton::hover {
           <number>0</number>
          </property>
          <property name="bottomMargin">
-          <number>3</number>
+          <number>0</number>
          </property>
          <item>
           <widget class="QFrame" name="frame">
@@ -329,7 +329,10 @@ QToolButton::hover {
            <property name="frameShadow">
             <enum>QFrame::Raised</enum>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0">
+           <property name="lineWidth">
+            <number>0</number>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -340,14 +343,14 @@ QToolButton::hover {
              <number>0</number>
             </property>
             <property name="bottomMargin">
-             <number>3</number>
+             <number>0</number>
             </property>
             <item>
              <widget class="NewQPushButton" name="serial_config_btn">
               <property name="minimumSize">
                <size>
                 <width>80</width>
-                <height>29</height>
+                <height>28</height>
                </size>
               </property>
               <property name="cursor">
@@ -363,7 +366,7 @@ QToolButton::hover {
               <property name="minimumSize">
                <size>
                 <width>80</width>
-                <height>29</height>
+                <height>28</height>
                </size>
               </property>
               <property name="cursor">
@@ -381,7 +384,7 @@ QToolButton::hover {
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>752</width>
+                <width>823</width>
                 <height>20</height>
                </size>
               </property>
@@ -411,7 +414,7 @@ QToolButton::hover {
            <property name="minimumSize">
             <size>
              <width>30</width>
-             <height>30</height>
+             <height>29</height>
             </size>
            </property>
            <property name="cursor">
