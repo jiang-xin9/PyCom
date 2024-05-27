@@ -1,10 +1,24 @@
-import os, sys, datetime
+import os
+import sys
+import datetime
 
-Base_Path = os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + '\..')
-sys_ = os.path.realpath(os.path.dirname(sys.argv[0]))
+def get_base_path():
+    # 检查是否被打包
+    if getattr(sys, 'frozen', False):
+        # 如果被打包，使用 sys._MEIPASS 作为基路径
+        return sys._MEIPASS
+    else:
+        # 否则，使用脚本文件的目录作为基路径
+        return os.path.abspath(os.path.dirname(__file__))
+
+Base_Path = get_base_path()
 LogTime = datetime.datetime.now().strftime("%H_%M_%S")
 
-command_config = os.path.join(Base_Path, 'config', 'fast_btn_config.ini')
-instruction_config = os.path.join(Base_Path, 'config', 'instruction_config.csv')
+# 构建配置文件路径
+command_config = os.path.join(Base_Path, 'fast_btn_config.ini')
+instruction_config = os.path.join(Base_Path, 'instruction_config.csv')
 
-
+# # 打印路径以供调试
+# print(f"Base_Path: {Base_Path}")
+# print(f"Command Config Path: {command_config}")
+# print(f"Instruction Config Path: {instruction_config}")
