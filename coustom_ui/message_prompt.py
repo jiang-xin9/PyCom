@@ -86,7 +86,13 @@ class CustomMessageBox(QWidget):
         QTimer.singleShot(1500, self.close)  # Message box will disappear after 3 seconds
 
     @staticmethod
-    def show_box(message, message_type, parent):
+    def show_box(message, message_type, parent=None):
+        if parent is None:
+            app = QApplication.instance()
+            if app is None:
+                app = QApplication(sys.argv)
+            parent = app.activeWindow()
+
         parent_geometry = parent.geometry()
         custom_message_box = CustomMessageBox(message, message_type, parent)
 
