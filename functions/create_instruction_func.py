@@ -26,7 +26,7 @@ class CreateInstructionUi(QWidget, Instruction_Form):
         self.start_btn.setEnabled(False)
         self.start_btn.clicked.connect(self.update_style)
         # 获取文件路径
-        self.get_file_path.clicked.connect(lambda line:self.tool.get_file_path(self.file_path_line))
+        self.get_file_path.clicked.connect(lambda line: self.tool.get_file_path(self.file_path_line))
         self.file_path_line.textChanged.connect(self.handle_file_path)
 
     def handle_file_path(self):
@@ -40,7 +40,7 @@ class CreateInstructionUi(QWidget, Instruction_Form):
             csv = path.split("\\")
         self.csv_message(path, csv)
 
-    def csv_message(self,path, text):
+    def csv_message(self, path, text):
         if ".csv" not in text[-1]:
             CustomMessageBox.show_box("非csv文件，无法加载", "warning", self)
         else:
