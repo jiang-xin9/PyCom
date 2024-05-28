@@ -5,13 +5,16 @@ from coustom_ui.message_prompt import CustomMessageBox
 
 
 class CreateFastBtn:
-    def __init__(self, ui):
-        super().__init__()
-        self.ui = ui
+    def __init__(self, quick_frame, save_config_btn, command_line, send_btn):
+        self.quick_frame = quick_frame
+        self.save_config_btn = save_config_btn
+        self.command_line = command_line
+        self.send_btn = send_btn
+
         # 初始化一个垂直布局，并将其添加到 quick_frame 中
-        self.vertical_layout = QVBoxLayout(self.ui.quick_frame)
-        self.ui.quick_frame.setLayout(self.vertical_layout)
-        self.ui.save_config_btn.clicked.connect(self.get_ini_config)
+        self.vertical_layout = QVBoxLayout(self.quick_frame)
+        self.quick_frame.setLayout(self.vertical_layout)
+        self.save_config_btn.clicked.connect(self.get_ini_config)
 
     def create_button_clicked_closure(self, line_edit):
         """实现点击"""
@@ -24,10 +27,10 @@ class CreateFastBtn:
 
     def _update_command(self, text):
         """更新写入指令"""
-        if self.ui.command_line.text():
-            self.ui.command_line.clear()
-        self.ui.command_line.setText(text)
-        self.ui.send_btn.click()  # 点击按钮下发指令
+        if self.command_line.text():
+            self.command_line.clear()
+        self.command_line.setText(text)
+        self.send_btn.click()  # 点击按钮下发指令
 
     def create_btn(self):
         """添加指令"""
@@ -65,7 +68,7 @@ class CreateFastBtn:
 
     def get_ini_config(self):
         """保存更新后的ini配置信息"""
-        line_edits = self.ui.quick_frame.findChildren(QLineEdit)
+        line_edits = self.quick_frame.findChildren(QLineEdit)
         texts = [line_edit.text() for line_edit in line_edits]
         self.commands.save_data("Commands", texts)
         CustomMessageBox.show_box("Save Success", "success")

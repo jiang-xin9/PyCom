@@ -31,6 +31,10 @@ class Tool:
         if file_name:
             widget_line_name.setText(file_name)
 
+    @staticmethod
+    def append_text(widget, text):
+        widget.append(text)
+
 # 使用示例
 # if __name__ == '__main__':
 #     csv_reader = Tool()

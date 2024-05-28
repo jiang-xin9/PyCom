@@ -19,6 +19,7 @@ class CreateSerialUi(QWidget, Serial_Form):
 
     def init_singers(self):
         self.ok_btn.clicked.connect(self.ok)
+        self.cancel_btn.clicked.connect(self.close)
         self.Com_Refresh_Button.clicked.connect(self.refresh_ports)
         self.Com_Open_Button.clicked.connect(self.open_port)
         self.Com_Close_Button.clicked.connect(self.close_port)

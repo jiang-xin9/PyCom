@@ -7,6 +7,7 @@ from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
 from functions.serial_config import SerialConfig
 from functions.create_instruction_func import CreateInstructionUi
+from coustom_ui.message_prompt import CustomMessageBox
 
 
 class PyCom(QWidget, Ui_Form):
@@ -22,17 +23,29 @@ class PyCom(QWidget, Ui_Form):
         self._startPos = QPoint(0, 0)
 
         self.tool = Tool()
-        self.serial = SerialConfig(self)
         self.init_ui_components()
         self.init_singers()
 
         self.is_maximized = False  # 用于跟踪窗口是否最大化
 
+        self.serial = SerialConfig(
+            serial_config_btn=self.serial_config_btn,
+            send_btn=self.send_btn,
+            command_line=self.command_line,
+            receive_text_edit=self.receive_textEdit,
+            show_message_box=CustomMessageBox.show_box
+        )
+
         self.show()
 
     def init_ui_components(self):
         """初始化UI组件"""
-        self.fast_btn = CreateFastBtn(self)
+        self.fast_btn = CreateFastBtn(
+            quick_frame=self.quick_frame,
+            save_config_btn=self.save_config_btn,
+            command_line=self.command_line,
+            send_btn=self.send_btn
+        )
         self.fast_btn.create_btn()
         self.back_expand = BackExpand(self)  # 按钮收缩侧边栏
 

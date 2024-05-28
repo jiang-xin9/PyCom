@@ -1,13 +1,20 @@
 from functions.serial_thread import SerialThread
 from functions.create_serial_func import CreateSerialUi
-from coustom_ui.message_prompt import CustomMessageBox
+from PyQt5.QtCore import QObject
+from functions.tool import Tool
 
-class SerialConfig:
-    def __init__(self, ui):
+
+class SerialConfig(QObject):
+    def __init__(self, serial_config_btn, send_btn, command_line, receive_text_edit, show_message_box):
         super().__init__()
-        self.ui = ui
-        self.ui.serial_config_btn.clicked.connect(self.show_serial_config)
-        self.ui.send_btn.clicked.connect(self.send_message)
+        self.serial_config_btn = serial_config_btn
+        self.send_btn = send_btn
+        self.command_line = command_line
+        self.receive_text_edit = receive_text_edit
+        self.show_message_box = show_message_box
+
+        self.serial_config_btn.clicked.connect(self.show_serial_config)
+        self.send_btn.clicked.connect(self.send_message)
 
         self.serial_thread = SerialThread()
         self.serial_thread.worker.received_data.connect(self.display_message)
@@ -28,24 +35,24 @@ class SerialConfig:
         self.baudrate = baudrate
 
     def send_message(self):
-        message = self.ui.command_line.text()
+        message = self.command_line.text()
         self.serial_thread.send_data(message)
 
     def display_message(self, message):
-        self.ui.receive_textEdit.append(f"收←: {message}")
+        Tool.append_text(self.receive_text_edit, f"收←: {message}")
 
     def display_sent_message(self, message):
-        self.ui.receive_textEdit.append(f"发→: {message}\n")
+        Tool.append_text(self.receive_text_edit, f"发→: {message}\n")
 
     def on_connection_made(self):
-        self.ui.receive_textEdit.append(f"Opened port {self.port} at {self.baudrate} baud")
-        CustomMessageBox.show_box("Success", "success")
+        Tool.append_text(self.receive_text_edit, f"Opened port {self.port} at {self.baudrate} baud")
+        self.show_message_box(f"{self.port} Success", "success")
 
     def on_connection_lost(self):
-        self.ui.receive_textEdit.append("Closed port")
+        Tool.append_text(self.receive_text_edit, "Closed port")
 
     def display_error(self, error):
-        self.ui.receive_textEdit.append(str(error))
+        Tool.append_text(self.receive_text_edit, str(error))
 
     def closeEvent(self, event):
         self.serial_thread.stop()
