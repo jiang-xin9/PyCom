@@ -1,7 +1,7 @@
-
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QFrame
 from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve
 from PyQt5.QtGui import QFontMetrics
+
 
 class CustomToggleButton(QWidget):
     def __init__(self, parent=None, off_text=None, on_text=None):
@@ -9,24 +9,31 @@ class CustomToggleButton(QWidget):
         self.off_text = off_text
         self.on_text = on_text
         self.toggled = False
+
+        # 获取控件的高度
+        self.height = self.height() if self.height() > 0 else 25
+
         self.initUI()
 
     def initUI(self):
         # 初始化开关的宽度
-        self.toggle_frame_width = 60
+        self.toggle_frame_width = 2 * self.height  # 宽度设置为高度的两倍
+        self.indicator_diameter = self.height - 6  # 指示器直径比高度小 6 像素
+        self.indicator_margin = 3  # 指示器边距
+
         # 计算需要的总宽度
         self.calculate_widths()
 
         # 创建并设置开关框架
         self.toggle_frame = QFrame(self)
-        self.toggle_frame.setFixedSize(self.toggle_frame_width, 30)
-        self.toggle_frame.setStyleSheet("background-color: #e0e0e0; border-radius: 15px;")
+        self.toggle_frame.setFixedSize(self.toggle_frame_width, self.height)
+        self.toggle_frame.setStyleSheet(f"background-color: #e0e0e0; border-radius: {self.height // 2}px;")
 
         # 创建并设置指示器
         self.indicator = QFrame(self.toggle_frame)
-        self.indicator.setFixedSize(24, 24)     # 圆圈的长宽
-        self.indicator.setStyleSheet("background-color: white; border-radius: 12px;")
-        self.indicator.move(3, 3)
+        self.indicator.setFixedSize(self.indicator_diameter, self.indicator_diameter)
+        self.indicator.setStyleSheet(f"background-color: white; border-radius: {self.indicator_diameter // 2}px;")
+        self.indicator.move(self.indicator_margin, self.indicator_margin)
 
         # 创建并设置标签
         self.label = QLabel(self.off_text, self)
@@ -40,6 +47,7 @@ class CustomToggleButton(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)  # 调整布局的外边距
 
         self.setLayout(layout)
+        self.setFixedHeight(self.height)  # 设置固定高度
 
         # 绑定鼠标点击事件
         self.toggle_frame.mousePressEvent = self.toggle
@@ -56,7 +64,7 @@ class CustomToggleButton(QWidget):
         on_text_width = font_metrics.width(self.on_text)
         max_text_width = max(off_text_width, on_text_width)
         total_width = self.toggle_frame_width + max_text_width + 30  # 计算总宽度并增加额外空间
-        self.setFixedSize(total_width, 30)
+        self.setFixedSize(total_width, self.height)
 
     def setText(self, text):
         # 设置 off 状态的文本
@@ -82,13 +90,16 @@ class CustomToggleButton(QWidget):
     def animate_toggle(self):
         # 执行动画效果
         if self.toggled:
-            self.anim.setEndValue(QRect(self.toggle_frame_width - 27, 3, 24, 24))
-            self.toggle_frame.setStyleSheet("background-color: #6200ea; border-radius: 15px;")
+            self.anim.setEndValue(
+                QRect(self.toggle_frame_width - self.indicator_margin - self.indicator_diameter, self.indicator_margin,
+                      self.indicator_diameter, self.indicator_diameter))
+            self.toggle_frame.setStyleSheet(f"background-color: #6200ea; border-radius: {self.height // 2}px;")
             if self.on_text:
                 self.label.setText(self.on_text)
         else:
-            self.anim.setEndValue(QRect(3, 3, 24, 24))
-            self.toggle_frame.setStyleSheet("background-color: #e0e0e0; border-radius: 15px;")
+            self.anim.setEndValue(
+                QRect(self.indicator_margin, self.indicator_margin, self.indicator_diameter, self.indicator_diameter))
+            self.toggle_frame.setStyleSheet(f"background-color: #e0e0e0; border-radius: {self.height // 2}px;")
             if self.off_text:
                 self.label.setText(self.off_text)
         self.anim.start()
