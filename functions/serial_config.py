@@ -1,11 +1,10 @@
 from functions.serial_thread import SerialThread
 from functions.create_serial_func import CreateSerialUi
-from PyQt5.QtCore import QObject
-from functions.tool import Tool
+from PyQt5.QtCore import QObject, QDateTime
 
 
 class SerialConfig(QObject):
-    def __init__(self, serial_config_btn, send_btn, command_line, receive_text_edit, show_message_box):
+    def __init__(self, serial_config_btn, send_btn, command_line, receive_text_edit, show_message_box, check_time):
         super().__init__()
         # 初始化需要的组件
         self.serial_config_btn = serial_config_btn
@@ -13,6 +12,7 @@ class SerialConfig(QObject):
         self.command_line = command_line
         self.receive_text_edit = receive_text_edit
         self.show_message_box = show_message_box
+        self.check_time = check_time
         # 绑定信号
         self.serial_config_btn.clicked.connect(self.show_serial_config)
         self.send_btn.clicked.connect(self.send_message)
@@ -44,25 +44,48 @@ class SerialConfig(QObject):
 
     def display_message(self, message):
         """写入接收数据"""
-        Tool.append_text(self.receive_text_edit, f"收←: {message}")
+        if self.check_time.toggled:
+            timestamp = QDateTime.currentDateTime().toString("HH:mm:ss.zzz")
+            message = f"[{timestamp}] 收←: {message}"
+        else:
+            message = f"收←: {message}"
+        self.receive_text_edit.append(f"{message}\n")
 
     def display_sent_message(self, message):
         """写入发送数据"""
-        Tool.append_text(self.receive_text_edit, f"发→: {message}\n")
+        if self.check_time.toggled:
+            timestamp = QDateTime.currentDateTime().toString("HH:mm:ss.zzz")
+            message = f"[{timestamp}] 发→: {message}"
+        else:
+            message = f" 发→: {message}"
+        self.receive_text_edit.append(f"{message}\n")
 
     def on_connection_made(self):
         """打开串口"""
-        Tool.append_text(self.receive_text_edit, f"Opened port {self.port} at {self.baudrate} baud")
+        if self.check_time.toggled:
+            timestamp = QDateTime.currentDateTime().toString("HH:mm:ss.zzz")
+            message = f"[{timestamp}] Opened port {self.port} at {self.baudrate} baud\n"
+        else:
+            message = f"Opened port {self.port} at {self.baudrate} baud\n"
+        self.receive_text_edit.append(message)
         self.show_message_box(f"{self.port} Success", "success")
 
     def on_connection_lost(self):
         """关闭串口"""
-        Tool.append_text(self.receive_text_edit, "Closed port")
+        if self.check_time.toggled:
+            timestamp = QDateTime.currentDateTime().toString("HH:mm:ss.zzz")
+            message = f"[{timestamp}] Closed port"
+        else:
+            message = "Closed port"
+        self.receive_text_edit.append(message)
         self.show_message_box(f"{self.port} Disconnect", "success")
 
     def display_error(self, error):
         """显示错误"""
-        Tool.append_text(self.receive_text_edit, str(error))
+        if self.check_time.toggled:
+            timestamp = QDateTime.currentDateTime().toString("HH:mm:ss.zzz")
+            error = f"[{timestamp}] {error}"
+        self.receive_text_edit.append(error)
         self.show_message_box(f"{self.port} Disconnect", "error")
 
     def closeEvent(self, event):
