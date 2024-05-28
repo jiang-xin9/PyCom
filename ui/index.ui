@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1123</width>
-    <height>689</height>
+    <height>740</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -545,7 +545,7 @@ QToolButton::hover {
                 <property name="maximumSize">
                  <size>
                   <width>16777215</width>
-                  <height>150</height>
+                  <height>180</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -557,10 +557,7 @@ QToolButton::hover {
                 <property name="frameShadow">
                  <enum>QFrame::Raised</enum>
                 </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_6">
-                 <property name="spacing">
-                  <number>2</number>
-                 </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_9">
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
@@ -732,6 +729,163 @@ QToolButton::hover {
                       </widget>
                      </item>
                      <item row="0" column="1">
+                      <widget class="CustomToggleButton" name="check_enter">
+                       <property name="minimumSize">
+                        <size>
+                         <width>100</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>微软雅黑</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>PointingHandCursor</cursorShape>
+                       </property>
+                       <property name="text">
+                        <string>回车换行</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0" colspan="2">
+                      <layout class="QHBoxLayout" name="horizontalLayout_6">
+                       <item>
+                        <widget class="CustomToggleButton" name="check_loop_send">
+                         <property name="minimumSize">
+                          <size>
+                           <width>100</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>微软雅黑</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="text">
+                          <string>循环发送</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="line_delayed">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>100</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>微软雅黑</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QLineEdit {
+	border-radius: 4px;
+	border: 1px solid #ced4da;
+}</string>
+                         </property>
+                         <property name="inputMask">
+                          <string/>
+                         </property>
+                         <property name="placeholderText">
+                          <string>延时单位/S</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="2" column="0" colspan="2">
+                      <layout class="QHBoxLayout" name="horizontalLayout_8">
+                       <item>
+                        <widget class="CustomToggleButton" name="check_save_log">
+                         <property name="minimumSize">
+                          <size>
+                           <width>100</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>微软雅黑</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="text">
+                          <string>保存日志</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="line_log">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>25</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>100</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>微软雅黑</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QLineEdit {
+	border-radius: 4px;
+	border: 1px solid #ced4da;
+}</string>
+                         </property>
+                         <property name="placeholderText">
+                          <string>日志分包/M</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="3" column="0">
                       <widget class="CustomToggleButton" name="check_hex_receive">
                        <property name="minimumSize">
                         <size>
@@ -753,29 +907,7 @@ QToolButton::hover {
                        </property>
                       </widget>
                      </item>
-                     <item row="1" column="0">
-                      <widget class="CustomToggleButton" name="check_loop_send">
-                       <property name="minimumSize">
-                        <size>
-                         <width>100</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="font">
-                        <font>
-                         <family>微软雅黑</family>
-                         <pointsize>10</pointsize>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>PointingHandCursor</cursorShape>
-                       </property>
-                       <property name="text">
-                        <string>循环发送</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="1">
+                     <item row="3" column="1">
                       <widget class="CustomToggleButton" name="check_hex_send">
                        <property name="minimumSize">
                         <size>
@@ -794,50 +926,6 @@ QToolButton::hover {
                        </property>
                        <property name="text">
                         <string>Hex发送</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="CustomToggleButton" name="check_save_log">
-                       <property name="minimumSize">
-                        <size>
-                         <width>100</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="font">
-                        <font>
-                         <family>微软雅黑</family>
-                         <pointsize>10</pointsize>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>PointingHandCursor</cursorShape>
-                       </property>
-                       <property name="text">
-                        <string>保存日志</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="1">
-                      <widget class="CustomToggleButton" name="check_enter">
-                       <property name="minimumSize">
-                        <size>
-                         <width>100</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="font">
-                        <font>
-                         <family>微软雅黑</family>
-                         <pointsize>10</pointsize>
-                        </font>
-                       </property>
-                       <property name="cursor">
-                        <cursorShape>PointingHandCursor</cursorShape>
-                       </property>
-                       <property name="text">
-                        <string>回车换行</string>
                        </property>
                       </widget>
                      </item>
