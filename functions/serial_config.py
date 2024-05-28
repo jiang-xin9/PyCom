@@ -1,5 +1,5 @@
 from functions.serial_thread import SerialThread
-from functions.create_serial_func import CreateSerialUi
+from functions.create_serial_ui import CreateSerialUi
 from PyQt5.QtCore import QObject, QDateTime
 
 

@@ -6,7 +6,7 @@ from functions.tool import Tool
 from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
 from functions.serial_config import SerialConfig
-from functions.create_instruction_func import CreateInstructionUi
+from functions.create_instruction_ui import CreateInstructionUi
 from coustom_ui.message_prompt import CustomMessageBox
 
 
