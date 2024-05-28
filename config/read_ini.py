@@ -12,7 +12,7 @@ class ConfigReader:
         self.config = configparser.ConfigParser()
         self.file_path = file_path
         self._read_config()
-        # self.signal_emitter = SignalEmitter()
+        self.signal_emitter = SignalEmitter()
 
     def _read_config(self):
         """
@@ -21,8 +21,8 @@ class ConfigReader:
         try:
             self.config.read(self.file_path)
         except Exception as e:
-            print(f"Failed to read config file: {e}")
-            # self.signal_emitter.send_signal(f"Failed to file: {e}")
+            # print(f"Failed to read config file: {e}")
+            self.signal_emitter.error_signal(f"Failed to file: {e}")
 
     def get_value(self, default=None):
         """
@@ -40,6 +40,7 @@ class ConfigReader:
                     commands.append(self.config[section][key])
             return commands
         except (configparser.NoSectionError, configparser.NoOptionError):
+            self.signal_emitter.error_signal(f"get value Failed")
             return default
 
     def save_data(self, section, data):
@@ -63,10 +64,11 @@ class ConfigReader:
 
             with open(self.file_path, 'w') as configfile:
                 self.config.write(configfile)
+            self.signal_emitter.success_signal(f"Configuration saved successfully.")
             # self.signal_emitter.send_signal("Configuration saved successfully.")
         except Exception as e:
-            print(f"Failed to save configuration: {e}")
-            # self.signal_emitter.send_signal(f"Failed to save configuration: {e}")
+            # print(f"Failed to save configuration: {e}")
+            self.signal_emitter.error_signal(f"Failed to save configuration: {e}")
 
 # if __name__ == '__main__':
 #     config_reader = ConfigReader('fast_btn_config.ini')
