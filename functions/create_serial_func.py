@@ -18,14 +18,12 @@ class CreateSerialUi(QWidget, Serial_Form):
         self.serial_thread = serial_thread
 
     def init_singers(self):
-        self.ok_btn.clicked.connect(self.ok)
-        self.cancel_btn.clicked.connect(self.close)
         self.Com_Refresh_Button.clicked.connect(self.refresh_ports)
         self.Com_Open_Button.clicked.connect(self.open_port)
         self.Com_Close_Button.clicked.connect(self.close_port)
 
-    def ok(self):
-        # self.sava_config()
+    def close_window(self):
+        """关闭窗口"""
         self.close()
 
     def sava_config(self):
@@ -48,6 +46,7 @@ class CreateSerialUi(QWidget, Serial_Form):
         if port:
             self.serial_thread.open_serial_port(port, baud)
             self.port_configured.emit(port, baud)
+            self.close_window()
 
     def close_port(self):
         """关闭串口"""
