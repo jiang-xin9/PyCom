@@ -1,4 +1,5 @@
 from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtGui import QKeyEvent
 from PyQt5.QtWidgets import QApplication, QWidget
 from ui.index import Ui_Form
 from functions.tool import Tool
@@ -6,7 +7,6 @@ from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
 from functions.serial_config import SerialConfig
 from functions.create_instruction_func import CreateInstructionUi
-from functions.send_singer import SignalEmitter
 
 
 class PyCom(QWidget, Ui_Form):
@@ -48,6 +48,7 @@ class PyCom(QWidget, Ui_Form):
         self.clear_send_text.clicked.connect(lambda: self.tool.clear_widget(self.command_line))
         self.clear_receive_text.clicked.connect(lambda: self.tool.clear_widget(self.receive_textEdit))
         self.send_instruction_btn.clicked.connect(self.show_instruction)
+        self.command_line.installEventFilter(self)  # 文本区域链接键盘回车事件
 
     def toggle_maximize_restore(self):
         """切换窗口的最大化和恢复"""
@@ -71,6 +72,15 @@ class PyCom(QWidget, Ui_Form):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self._isTracking = False
+
+    def eventFilter(self, obj, event):
+        if obj == self.command_line and event.type() == QKeyEvent.KeyPress:
+            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+                # 将回车键事件转发给发送按钮，实现快速发送数据
+                if self.command_line.text():
+                    self.send_btn.click()
+                return True
+        return super().eventFilter(obj, event)
 
 
 if __name__ == '__main__':
