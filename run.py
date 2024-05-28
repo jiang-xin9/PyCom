@@ -33,7 +33,8 @@ class PyCom(QWidget, Ui_Form):
             send_btn=self.send_btn,
             command_line=self.command_line,
             receive_text_edit=self.receive_textEdit,
-            show_message_box=CustomMessageBox.show_box
+            show_message_box=CustomMessageBox.show_box,
+            check_time=self.check_time
         )
 
         self.show()
