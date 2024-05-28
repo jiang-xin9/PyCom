@@ -1,5 +1,5 @@
-import sys
-from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QFrame, QApplication
+
+from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QFrame
 from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve
 from PyQt5.QtGui import QFontMetrics
 
