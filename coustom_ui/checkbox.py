@@ -2,13 +2,12 @@ from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QFrame
 from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve
 from PyQt5.QtGui import QFontMetrics
 
-
 class CustomToggleButton(QWidget):
-    def __init__(self, parent=None, off_text=None, on_text=None):
+    def __init__(self, parent=None, off_text=None, on_text=None, default_state=False):
         super().__init__(parent)
         self.off_text = off_text
         self.on_text = on_text
-        self.toggled = False
+        self.toggled = default_state
 
         # 获取控件的高度
         self.height = self.height() if self.height() > 0 else 25
@@ -33,7 +32,6 @@ class CustomToggleButton(QWidget):
         self.indicator = QFrame(self.toggle_frame)
         self.indicator.setFixedSize(self.indicator_diameter, self.indicator_diameter)
         self.indicator.setStyleSheet(f"background-color: white; border-radius: {self.indicator_diameter // 2}px;")
-        self.indicator.move(self.indicator_margin, self.indicator_margin)
 
         # 创建并设置标签
         self.label = QLabel(self.off_text, self)
@@ -56,6 +54,12 @@ class CustomToggleButton(QWidget):
         self.anim = QPropertyAnimation(self.indicator, b"geometry")
         self.anim.setDuration(200)
         self.anim.setEasingCurve(QEasingCurve.OutQuad)
+
+        # 根据默认状态初始化外观
+        if self.toggled:
+            self.set_on(animate=False)
+        else:
+            self.set_off(animate=False)
 
     def calculate_widths(self):
         # 使用 QFontMetrics 计算文本宽度
@@ -82,7 +86,7 @@ class CustomToggleButton(QWidget):
             self.label.setText(self.off_text)
         self.calculate_widths()  # 重新计算宽度
 
-    def toggle(self, event):
+    def toggle(self, event=None):
         # 切换开关状态
         self.toggled = not self.toggled
         self.animate_toggle()
@@ -90,16 +94,35 @@ class CustomToggleButton(QWidget):
     def animate_toggle(self):
         # 执行动画效果
         if self.toggled:
-            self.anim.setEndValue(
-                QRect(self.toggle_frame_width - self.indicator_margin - self.indicator_diameter, self.indicator_margin,
-                      self.indicator_diameter, self.indicator_diameter))
-            self.toggle_frame.setStyleSheet(f"background-color: #6200ea; border-radius: {self.height // 2}px;")
-            if self.on_text:
-                self.label.setText(self.on_text)
+            self.set_on()
         else:
-            self.anim.setEndValue(
-                QRect(self.indicator_margin, self.indicator_margin, self.indicator_diameter, self.indicator_diameter))
-            self.toggle_frame.setStyleSheet(f"background-color: #e0e0e0; border-radius: {self.height // 2}px;")
-            if self.off_text:
-                self.label.setText(self.off_text)
+            self.set_off()
         self.anim.start()
+
+    def set_on(self, animate=True):
+        end_value = QRect(self.toggle_frame_width - self.indicator_margin - self.indicator_diameter, self.indicator_margin,
+                          self.indicator_diameter, self.indicator_diameter)
+        if animate:
+            self.anim.setEndValue(end_value)
+        else:
+            self.indicator.setGeometry(end_value)
+        self.toggle_frame.setStyleSheet(f"background-color: #6200ea; border-radius: {self.height // 2}px;")
+        if self.on_text:
+            self.label.setText(self.on_text)
+
+    def set_off(self, animate=True):
+        end_value = QRect(self.indicator_margin, self.indicator_margin, self.indicator_diameter, self.indicator_diameter)
+        if animate:
+            self.anim.setEndValue(end_value)
+        else:
+            self.indicator.setGeometry(end_value)
+        self.toggle_frame.setStyleSheet(f"background-color: #e0e0e0; border-radius: {self.height // 2}px;")
+        if self.off_text:
+            self.label.setText(self.off_text)
+
+    def set_toggled(self, state):
+        self.toggled = state
+        if state:
+            self.set_on(animate=False)
+        else:
+            self.set_off(animate=False)
