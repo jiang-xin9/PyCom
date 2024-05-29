@@ -1,10 +1,17 @@
+import time
+
 from functions.serial_thread import SerialThread
 from functions.create_serial_ui import CreateSerialUi
 from PyQt5.QtCore import QObject, QDateTime
 
 
 class SerialConfig(QObject):
-    def __init__(self, serial_config_btn, send_btn, command_line, receive_text_edit, show_message_box, check_time):
+    def __init__(self, serial_config_btn, send_btn, command_line, receive_text_edit,
+                 show_message_box,
+                 check_time,
+                 check_enter,
+                 check_loop_send,
+                 line_delayed):
         super().__init__()
         # 初始化需要的组件
         self.serial_config_btn = serial_config_btn
@@ -13,11 +20,13 @@ class SerialConfig(QObject):
         self.receive_text_edit = receive_text_edit
         self.show_message_box = show_message_box
         self.check_time = check_time
+        self.check_enter = check_enter
+        self.check_loop_send = check_loop_send
         # 绑定信号
         self.serial_config_btn.clicked.connect(self.show_serial_config)
         self.send_btn.clicked.connect(self.send_message)
         # 实例化串口线程
-        self.serial_thread = SerialThread()
+        self.serial_thread = SerialThread(self.check_enter)  # 传递 check_enter
         self.serial_thread.worker.received_data.connect(self.display_message)
         self.serial_thread.worker.data_sent.connect(self.display_sent_message)
         self.serial_thread.worker.serial_connection_made.connect(self.on_connection_made)

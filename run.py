@@ -8,7 +8,7 @@ from functions.back_expand_func import BackExpand
 from functions.serial_config import SerialConfig
 from functions.create_instruction_ui import CreateInstructionUi
 from coustom_ui.message_prompt import CustomMessageBox
-
+from coustom_ui.checkbox import CustomToggleButton
 
 class PyCom(QWidget, Ui_Form):
 
@@ -28,13 +28,20 @@ class PyCom(QWidget, Ui_Form):
 
         self.is_maximized = False  # 用于跟踪窗口是否最大化
 
+        # 初始化开关按钮的状态
+        self.check_enter.set_toggled(True)
+
+        # 将 check_enter 传递给 SerialWorker
         self.serial = SerialConfig(
             serial_config_btn=self.serial_config_btn,
             send_btn=self.send_btn,
             command_line=self.command_line,
             receive_text_edit=self.receive_textEdit,
             show_message_box=CustomMessageBox.show_box,
-            check_time=self.check_time
+            check_time=self.check_time,
+            check_enter=self.check_enter,  # 传递 check_enter 实例
+            check_loop_send=self.check_loop_send,
+            line_delayed=self.line_delayed
         )
 
         self.show()
@@ -95,7 +102,6 @@ class PyCom(QWidget, Ui_Form):
                     self.send_btn.click()
                 return True
         return super().eventFilter(obj, event)
-
 
 if __name__ == '__main__':
     app = QApplication([])

@@ -4,9 +4,9 @@ from functions.serial_work import SerialWorker
 
 
 class SerialThread(QThread):
-    def __init__(self):
+    def __init__(self, check_enter):
         super().__init__()
-        self.worker = SerialWorker()
+        self.worker = SerialWorker(check_enter)
         self.loop = None
 
     def run(self):

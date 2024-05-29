@@ -2,7 +2,6 @@ import asyncio
 import serial_asyncio
 from PyQt5.QtCore import QObject, pyqtSignal
 
-
 class SerialWorker(QObject):
     received_data = pyqtSignal(str)
     data_sent = pyqtSignal(str)
@@ -10,9 +9,10 @@ class SerialWorker(QObject):
     serial_connection_lost = pyqtSignal()
     error_occurred = pyqtSignal(str)
 
-    def __init__(self):
+    def __init__(self, check_enter):
         super().__init__()
         self.transport = None
+        self.check_enter = check_enter
 
     async def open_serial_port(self, port, baudrate):
         try:
@@ -32,11 +32,13 @@ class SerialWorker(QObject):
     def send_data(self, data):
         if self.transport:
             try:
-                self.transport.write((data + '\r\n').encode('utf-8'))  # 确保发送的数据带有结束符
+                if self.check_enter.toggled:
+                    self.transport.write((data + '\r\n').encode('utf-8'))  # 确保发送的数据带有结束符
+                else:
+                    self.transport.write((data).encode('utf-8'))  # 确保发送的数据带有结束符
                 self.data_sent.emit(data)  # 发射信号
             except Exception as e:
                 self.error_occurred.emit(str(e))
-
 
 class SerialProtocol(asyncio.Protocol):
     def __init__(self, worker):
