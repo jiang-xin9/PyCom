@@ -1,8 +1,8 @@
-import time
+import asyncio
+from PyQt5.QtCore import QObject, QDateTime, QTimer
 
-from functions.serial_thread import SerialThread
 from functions.create_serial_ui import CreateSerialUi
-from PyQt5.QtCore import QObject, QDateTime
+from functions.serial_thread import SerialThread
 
 
 class SerialConfig(QObject):
@@ -22,9 +22,11 @@ class SerialConfig(QObject):
         self.check_time = check_time
         self.check_enter = check_enter
         self.check_loop_send = check_loop_send
+        self.line_delayed = line_delayed
         # 绑定信号
         self.serial_config_btn.clicked.connect(self.show_serial_config)
         self.send_btn.clicked.connect(self.send_message)
+        self.check_loop_send.toggled_signal.connect(self.toggle_loop_send)  # 绑定循环发送开关的信号
         # 实例化串口线程
         self.serial_thread = SerialThread(self.check_enter)  # 传递 check_enter
         self.serial_thread.worker.received_data.connect(self.display_message)
@@ -35,6 +37,7 @@ class SerialConfig(QObject):
         # 初始获取串口
         self.serial_ui = CreateSerialUi(self.serial_thread)
         self.serial_ui.port_configured.connect(self.update_port_config)
+        self.loop_timer = QTimer(self)  # 定时器用于循环发送
 
     def show_serial_config(self):
         """显示串口配置界面启动线程"""
@@ -96,6 +99,28 @@ class SerialConfig(QObject):
             error = f"[{timestamp}] {error}"
         self.receive_text_edit.append(error)
         self.show_message_box(f"{self.port} Disconnect", "error")
+
+    def toggle_loop_send(self, toggled):
+        """切换循环发送"""
+        if toggled:
+            self.start_loop_send()
+        else:
+            self.stop_loop_send()
+
+    def start_loop_send(self):
+        """开始循环发送"""
+        try:
+            interval = int(self.line_delayed.text()) * 1000  # 转换为毫秒
+        except ValueError:
+            self.show_message_box("请先填写延迟或者需要发送的指令", "error")
+            return
+
+        self.loop_timer.timeout.connect(self.send_message)
+        self.loop_timer.start(interval)
+
+    def stop_loop_send(self):
+        """停止循环发送"""
+        self.loop_timer.stop()
 
     def closeEvent(self, event):
         self.serial_thread.stop()
