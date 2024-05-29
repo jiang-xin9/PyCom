@@ -8,7 +8,7 @@ from functions.back_expand_func import BackExpand
 from functions.serial_config import SerialConfig
 from functions.create_instruction_ui import CreateInstructionUi
 from coustom_ui.message_prompt import CustomMessageBox
-from coustom_ui.checkbox import CustomToggleButton
+
 
 class PyCom(QWidget, Ui_Form):
 
@@ -102,6 +102,7 @@ class PyCom(QWidget, Ui_Form):
                     self.send_btn.click()
                 return True
         return super().eventFilter(obj, event)
+
 
 if __name__ == '__main__':
     app = QApplication([])
