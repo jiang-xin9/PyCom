@@ -1,8 +1,10 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QFrame
-from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve
+from PyQt5.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve, pyqtSignal
 from PyQt5.QtGui import QFontMetrics
 
 class CustomToggleButton(QWidget):
+    toggled_signal = pyqtSignal(bool)  # 添加一个信号
+
     def __init__(self, parent=None, off_text=None, on_text=None, default_state=False):
         super().__init__(parent)
         self.off_text = off_text
@@ -89,6 +91,7 @@ class CustomToggleButton(QWidget):
     def toggle(self, event=None):
         # 切换开关状态
         self.toggled = not self.toggled
+        self.toggled_signal.emit(self.toggled)  # 发射信号
         self.animate_toggle()
 
     def animate_toggle(self):
