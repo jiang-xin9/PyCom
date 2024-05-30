@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QHBoxLayout, QLineEdit, QPushButton, QVBoxLayout
 from config.read_ini import ConfigReader
 from config.handel_config import command_config
 from coustom_ui.message_prompt import CustomMessageBox
+from coustom_ui.lineEdit import NewLineEdit
 
 
 class CreateFastBtn:
@@ -45,7 +46,7 @@ class CreateFastBtn:
 
         def create_command_row(command):
             row_layout = QHBoxLayout()
-            line_edit = QLineEdit(command)
+            line_edit = NewLineEdit(command)
             button1 = QPushButton("发送1")
 
             line_edit.setFixedHeight(25)
