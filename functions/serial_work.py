@@ -2,6 +2,7 @@ import asyncio
 import serial_asyncio
 from PyQt5.QtCore import QObject, pyqtSignal
 
+
 class SerialWorker(QObject):
     received_data = pyqtSignal(str)
     data_sent = pyqtSignal(str)
@@ -39,6 +40,7 @@ class SerialWorker(QObject):
                 self.data_sent.emit(data)  # 发射信号
             except Exception as e:
                 self.error_occurred.emit(str(e))
+
 
 class SerialProtocol(asyncio.Protocol):
     def __init__(self, worker):
