@@ -20,8 +20,8 @@ class BackExpand(QWidget):
         self.sidebar_state = SidebarParameters.COLLAPSED
 
         # 设置图标路径
-        self.expand_icon = QIcon(":/icons/icon/EpArrowLeft.png")  # 展开图标路径
-        self.collapse_icon = QIcon(":/icons/icon/EpArrowRight.png")  # 收缩图标路径
+        self.expand_icon = QIcon(":/icons/icon/EpArrowRight.png")  # 展开图标路径
+        self.collapse_icon = QIcon(":/icons/icon/EpArrowLeft.png")  # 收缩图标路径
 
         # 设置初始图标为收缩图标，因为初始状态为收缩
         self.ui.open_btn.setIcon(self.collapse_icon)
