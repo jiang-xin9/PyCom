@@ -390,7 +390,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.quick_frame.sizePolicy().hasHeightForWidth())
         self.quick_frame.setSizePolicy(sizePolicy)
-        self.quick_frame.setMaximumSize(QtCore.QSize(180, 16777215))
+        self.quick_frame.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.quick_frame.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.quick_frame.setStyleSheet("QFrame#quick_frame{\n"
 "    background-color: rgb(255, 255, 255);\n"
@@ -440,3 +440,4 @@ class Ui_Form(object):
 from coustom_ui.checkbox import CustomToggleButton
 from coustom_ui.pushbutton import NewQPushButton
 from . import resources
+
