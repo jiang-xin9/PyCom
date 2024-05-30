@@ -1,5 +1,6 @@
 import asyncio
 from PyQt5.QtCore import QObject, QDateTime, QTimer
+from PyQt5.QtGui import QColor, QTextCursor, QTextCharFormat
 
 from functions.create_serial_ui import CreateSerialUi
 from functions.serial_thread import SerialThread
@@ -60,8 +61,9 @@ class SerialConfig(QObject):
             timestamp = QDateTime.currentDateTime().toString("HH:mm:ss.zzz")
             message = f"[{timestamp}] 收←: {message}"
         else:
-            message = f"收←: {message}"
+            message = f"收<: {message}"
         self.receive_text_edit.append(f"{message}\n")
+        # self.limit_text_edit_size()
 
     def display_sent_message(self, message):
         """写入发送数据"""
@@ -69,8 +71,9 @@ class SerialConfig(QObject):
             timestamp = QDateTime.currentDateTime().toString("HH:mm:ss.zzz")
             message = f"[{timestamp}] 发→: {message}"
         else:
-            message = f" 发→: {message}"
-        self.receive_text_edit.append(f"{message}\n")
+            message = f"发>: {message}"
+        self.receive_text_edit.append(f"{message}")
+        self.limit_text_edit_size()
 
     def on_connection_made(self):
         """打开串口"""
@@ -110,13 +113,13 @@ class SerialConfig(QObject):
     def start_loop_send(self):
         """开始循环发送"""
         try:
-            interval = int(self.line_delayed.text()) * 1000  # 转换为毫秒
+            interval = float(self.line_delayed.text()) * 1000  # 转换为毫秒
         except ValueError:
-            self.show_message_box("请先填写延迟或者需要发送的指令", "error")
+            self.show_message_box("请先填写延迟时间", "error")
             return
 
         self.loop_timer.timeout.connect(self.send_message)
-        self.loop_timer.start(interval)
+        self.loop_timer.start(int(interval))
 
     def stop_loop_send(self):
         """停止循环发送"""
@@ -126,3 +129,16 @@ class SerialConfig(QObject):
         self.serial_thread.stop()
         self.serial_thread.wait()
         event.accept()
+
+    def limit_text_edit_size(self):
+        max_block_count = 2860  # 设置最大行数
+        document = self.receive_text_edit.document()
+        if document.blockCount() > max_block_count:
+            cursor = self.receive_text_edit.textCursor()
+            cursor.movePosition(QTextCursor.Start)
+            for _ in range(document.blockCount() - max_block_count):
+                cursor.select(QTextCursor.BlockUnderCursor)
+                cursor.removeSelectedText()
+                cursor.deleteChar()  # 删除新行
+                if document.blockCount() <= max_block_count:
+                    break
