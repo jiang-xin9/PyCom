@@ -47,6 +47,7 @@ class SerialConfig(QObject):
         self.loop_timer = QTimer(self)  # 定时器用于循环发送
         self.logger = None  # 初始化 logger 为 None
         self.log_enabled = False  # 初始日志记录状态为关闭
+        self.loop_send_connected = False
 
     def show_serial_config(self):
         """显示串口配置界面启动线程"""
@@ -132,12 +133,19 @@ class SerialConfig(QObject):
             self.show_message_box("请先填写延迟时间", "error")
             return
 
+        # self.loop_timer.disconnect()
+        if self.loop_send_connected:
+            self.loop_timer.timeout.disconnect(self.send_message)
         self.loop_timer.timeout.connect(self.send_message)
+        self.loop_send_connected = True
         self.loop_timer.start(int(interval))
 
     def stop_loop_send(self):
         """停止循环发送"""
         self.loop_timer.stop()
+        if self.loop_send_connected:
+            self.loop_timer.timeout.disconnect(self.send_message)
+            self.loop_send_connected = False
 
     def toggle_save_log(self, toggled):
         """切换日志存储"""
