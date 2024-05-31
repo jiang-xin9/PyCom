@@ -24,7 +24,7 @@ class Logger(QThread):
 
         if self.max_size_kb:
             handler = RotatingFileHandler(
-                log_file_path, maxBytes=int(self.max_size_kb) * 1024,
+                log_file_path, maxBytes=int(self.max_size_kb) * 1024 * 1024,
                 backupCount=self.backup_count,
                 encoding='utf-8'
             )
