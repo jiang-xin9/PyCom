@@ -44,6 +44,13 @@ class PyCom(QWidget, Ui_Form):
             line_delayed=self.line_delayed
         )
 
+        self.minWidth = 400
+        self.minHeight = 300
+        self.setMinimumWidth(self.minWidth)
+        self.setMinimumHeight(self.minHeight)
+        self.setMouseTracking(True)  # 设置widget鼠标跟踪
+        self.initDrag()  # 设置鼠标跟踪判断默认值
+
         self.show()
 
     def init_ui_components(self):
@@ -80,19 +87,81 @@ class PyCom(QWidget, Ui_Form):
             self.showMaximized()
             self.is_maximized = True
 
+    def initDrag(self):
+        # 设置鼠标跟踪判断扳机默认值
+        self._move_drag = False
+        self._bottom_drag = False
+        self._right_drag = False
+        self._left_drag = False
+        self._right_bottom_corner_drag = False
+        self._left_bottom_corner_drag = False
+
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self._isTracking = True
-            self._startPos = event.pos()
+        # 重写鼠标点击的事件
+        if (event.button() == Qt.LeftButton) and (self._cursorInBottomRightCorner(event.pos())):
+            # 鼠标左键点击右下角边界区域
+            self._right_bottom_corner_drag = True
+            event.accept()
+        elif (event.button() == Qt.LeftButton) and (self._cursorInBottomLeftCorner(event.pos())):
+            # 鼠标左键点击左下角边界区域
+            self._left_bottom_corner_drag = True
+            event.accept()
+        elif (event.button() == Qt.LeftButton) and (self._cursorInLeftRect(event.pos())):
+            # 鼠标左键点击左侧边界区域
+            self._left_drag = True
+            event.accept()
+        elif (event.button() == Qt.LeftButton) and (self._cursorInRightRect(event.pos())):
+            # 鼠标左键点击右侧边界区域
+            self._right_drag = True
+            event.accept()
+        elif (event.button() == Qt.LeftButton) and (self._cursorInBottomRect(event.pos())):
+            # 鼠标左键点击下侧边界区域
+            self._bottom_drag = True
+            event.accept()
+        elif (event.button() == Qt.LeftButton) and (event.y() < self._titleHeight()):
+            # 鼠标左键点击标题栏区域
+            self._move_drag = True
+            self.move_DragPosition = event.globalPos() - self.pos()
+            event.accept()
 
-    def mouseMoveEvent(self, event):
-        if self._isTracking:
-            self._endPos = event.pos() - self._startPos
-            self.move(self.pos() + self._endPos)
+    def mouseMoveEvent(self, QMouseEvent):
+        # 当鼠标左键点击不放及满足点击区域的要求后，分别实现不同的窗口调整
+        if Qt.LeftButton and (self._right_drag or self._left_drag or self._bottom_drag or self._right_bottom_corner_drag or self._left_bottom_corner_drag):
+            if self._right_drag:
+                # 右侧调整窗口宽度
+                self.resize(QMouseEvent.pos().x(), self.height())
+            elif self._left_drag:
+                # 左侧调整窗口宽度
+                new_width = self.width() - QMouseEvent.pos().x()
+                if new_width >= self.minWidth:
+                    self.resize(new_width, self.height())
+                    self.move(self.x() + QMouseEvent.pos().x(), self.y())
+            elif self._bottom_drag:
+                # 下侧调整窗口高度
+                self.resize(self.width(), QMouseEvent.pos().y())
+            elif self._right_bottom_corner_drag:
+                # 右下角同时调整高度和宽度
+                self.resize(QMouseEvent.pos().x(), QMouseEvent.pos().y())
+            elif self._left_bottom_corner_drag:
+                # 左下角同时调整高度和宽度
+                new_width = self.width() - QMouseEvent.pos().x()
+                if new_width >= self.minWidth:
+                    self.resize(new_width, QMouseEvent.pos().y())
+                    self.move(self.x() + QMouseEvent.pos().x(), self.y())
+            QMouseEvent.accept()
+        elif Qt.LeftButton and self._move_drag:
+            # 标题栏拖放窗口位置
+            self.move(QMouseEvent.globalPos() - self.move_DragPosition)
+            QMouseEvent.accept()
 
-    def mouseReleaseEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self._isTracking = False
+    def mouseReleaseEvent(self, QMouseEvent):
+        # 鼠标释放后，各扳机复位
+        self._move_drag = False
+        self._right_bottom_corner_drag = False
+        self._bottom_drag = False
+        self._right_drag = False
+        self._left_drag = False
+        self._left_bottom_corner_drag = False
 
     def eventFilter(self, obj, event):
         if obj == self.command_line and event.type() == QKeyEvent.KeyPress:
@@ -102,6 +171,24 @@ class PyCom(QWidget, Ui_Form):
                     self.send_btn.click()
                 return True
         return super().eventFilter(obj, event)
+
+    def _cursorInRightRect(self, pos):
+        return pos.x() > self.width() - 5 and pos.x() <= self.width()
+
+    def _cursorInLeftRect(self, pos):
+        return pos.x() >= 0 and pos.x() < 5
+
+    def _cursorInBottomRect(self, pos):
+        return pos.y() > self.height() - 5 and pos.y() <= self.height()
+
+    def _cursorInBottomRightCorner(self, pos):
+        return self._cursorInRightRect(pos) and self._cursorInBottomRect(pos)
+
+    def _cursorInBottomLeftCorner(self, pos):
+        return self._cursorInLeftRect(pos) and self._cursorInBottomRect(pos)
+
+    def _titleHeight(self):
+        return self.titleWidget.height() if hasattr(self, 'titleWidget') else 30
 
 
 if __name__ == '__main__':
