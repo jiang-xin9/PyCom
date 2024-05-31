@@ -1,9 +1,10 @@
-import asyncio
-from PyQt5.QtCore import QObject, QDateTime, QTimer
-from PyQt5.QtGui import QColor, QTextCursor, QTextCharFormat
 
+from PyQt5.QtCore import QObject, QDateTime, QTimer
+from PyQt5.QtGui import QTextCursor
 from functions.create_serial_ui import CreateSerialUi
 from functions.serial_thread import SerialThread
+from functions.log_func import Logger
+from config.handel_config import log_folder_path
 
 
 class SerialConfig(QObject):
@@ -12,7 +13,9 @@ class SerialConfig(QObject):
                  check_time,
                  check_enter,
                  check_loop_send,
-                 line_delayed):
+                 line_delayed,
+                 check_save_log,
+                 line_log):
         super().__init__()
         # 初始化需要的组件
         self.serial_config_btn = serial_config_btn
@@ -24,10 +27,13 @@ class SerialConfig(QObject):
         self.check_enter = check_enter
         self.check_loop_send = check_loop_send
         self.line_delayed = line_delayed
+        self.check_save_log = check_save_log
+        self.line_log = line_log
         # 绑定信号
         self.serial_config_btn.clicked.connect(self.show_serial_config)
         self.send_btn.clicked.connect(self.send_message)
         self.check_loop_send.toggled_signal.connect(self.toggle_loop_send)  # 绑定循环发送开关的信号
+        self.check_save_log.toggled_signal.connect(self.toggle_save_log)  # 绑定日志存储开关的信号
         # 实例化串口线程
         self.serial_thread = SerialThread(self.check_enter)  # 传递 check_enter
         self.serial_thread.worker.received_data.connect(self.display_message)
@@ -39,6 +45,8 @@ class SerialConfig(QObject):
         self.serial_ui = CreateSerialUi(self.serial_thread)
         self.serial_ui.port_configured.connect(self.update_port_config)
         self.loop_timer = QTimer(self)  # 定时器用于循环发送
+        self.logger = None  # 初始化 logger 为 None
+        self.log_enabled = False  # 初始日志记录状态为关闭
 
     def show_serial_config(self):
         """显示串口配置界面启动线程"""
@@ -63,6 +71,8 @@ class SerialConfig(QObject):
         else:
             message = f"收<: {message}"
         self.receive_text_edit.append(f"{message}\n")
+        if self.logger:
+            self.logger.log_signal.emit(message)
         # self.limit_text_edit_size()
 
     def display_sent_message(self, message):
@@ -74,6 +84,8 @@ class SerialConfig(QObject):
             message = f"发>: {message}"
         self.receive_text_edit.append(f"{message}")
         self.limit_text_edit_size()
+        if self.logger:
+            self.logger.log_signal.emit(message)
 
     def on_connection_made(self):
         """打开串口"""
@@ -94,6 +106,8 @@ class SerialConfig(QObject):
             message = "Closed port"
         self.receive_text_edit.append(message)
         self.show_message_box(f"{self.port} Disconnect", "success")
+        # 停止日志存储（仅在日志存储已启动时）
+        self.stop_saving_log()
 
     def display_error(self, error):
         """显示错误"""
@@ -125,9 +139,32 @@ class SerialConfig(QObject):
         """停止循环发送"""
         self.loop_timer.stop()
 
+    def toggle_save_log(self, toggled):
+        """切换日志存储"""
+        if toggled:
+            self.start_saving_log()
+        else:
+            self.stop_saving_log()
+
+    def stop_saving_log(self):
+        """停止日志存储"""
+        if self.logger:
+            self.logger.stop_logging()
+            self.logger = None
+
+    def start_saving_log(self):
+        """开始日志存储"""
+        max_size_kb = self.line_log.text()
+        if max_size_kb:
+            self.logger = Logger(log_folder_path, max_size_kb)
+        else:
+            self.logger = Logger(log_folder_path)
+        self.logger.start()
+
     def closeEvent(self, event):
         self.serial_thread.stop()
         self.serial_thread.wait()
+        self.stop_saving_log()  # 关闭时停止日志存储
         event.accept()
 
     def limit_text_edit_size(self):

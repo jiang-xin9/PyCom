@@ -36,7 +36,9 @@ class PyCom(CFramelessBase, Ui_Form):
             check_time=self.check_time,
             check_enter=self.check_enter,  # 传递 check_enter 实例
             check_loop_send=self.check_loop_send,
-            line_delayed=self.line_delayed
+            line_delayed=self.line_delayed,
+            check_save_log=self.check_save_log,
+            line_log=self.line_log
         )
 
         # 添加拖拽功能到 top_Frame

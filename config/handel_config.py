@@ -12,11 +12,19 @@ def get_base_path():
         return os.path.abspath(os.path.dirname(__file__))
 
 Base_Path = get_base_path()
-LogTime = datetime.datetime.now().strftime("%H_%M_%S")
+LogTime = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
 # 构建配置文件路径
 command_config = os.path.join(Base_Path, 'fast_btn_config.ini')
 instruction_config = os.path.join(Base_Path, 'instruction_config.csv')
+
+# 创建 log 文件夹路径
+log_folder_path = os.path.join(Base_Path, 'log')
+
+# 检查 log 文件夹是否存在，如果不存在则创建
+if not os.path.exists(log_folder_path):
+    os.makedirs(log_folder_path)
+
 
 # # 打印路径以供调试
 # print(f"Base_Path: {Base_Path}")
