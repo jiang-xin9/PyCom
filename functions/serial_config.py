@@ -1,5 +1,5 @@
 
-from PyQt5.QtCore import QObject, QDateTime, QTimer
+from PyQt5.QtCore import QObject, QDateTime, QTimer, QPoint
 from PyQt5.QtGui import QTextCursor
 from functions.create_serial_ui import CreateSerialUi
 from functions.serial_thread import SerialThread
@@ -51,6 +51,15 @@ class SerialConfig(QObject):
 
     def show_serial_config(self):
         """显示串口配置界面启动线程"""
+        # 获取按钮的位置和尺寸
+        btn_rect = self.serial_config_btn.geometry()
+        global_pos = self.serial_config_btn.mapToGlobal(QPoint(0, 0))
+
+        # 计算窗口的位置，使其显示在按钮的左侧
+        x = global_pos.x() - self.serial_ui.width() - 20
+        y = global_pos.y()
+
+        self.serial_ui.move(x, y)
         self.serial_ui.show()
         self.serial_thread.start()
 
