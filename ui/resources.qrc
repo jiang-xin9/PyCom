@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icon/EpAdd.png</file>
     <file>icon/favicon.ico</file>
     <file>icon/icon.ico</file>
     <file>icon/error.png</file>

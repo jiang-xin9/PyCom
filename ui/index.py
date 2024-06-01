@@ -27,6 +27,7 @@ class Ui_Form(object):
         self.top_Frame.setMinimumSize(QtCore.QSize(0, 25))
         self.top_Frame.setStyleSheet("QFrame#top_Frame {\n"
 "    background-color: rgb(200, 224, 228);\n"
+"    border: 1px solid #000000;\n"
 "}\n"
 "QToolButton::hover {\n"
 "    background-color: rgb(121, 164, 172);\n"
@@ -167,6 +168,15 @@ class Ui_Form(object):
         self.send_instruction_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.send_instruction_btn.setObjectName("send_instruction_btn")
         self.horizontalLayout_7.addWidget(self.send_instruction_btn)
+        self.add_widget_btn = QtWidgets.QToolButton(self.frame)
+        self.add_widget_btn.setMinimumSize(QtCore.QSize(28, 28))
+        self.add_widget_btn.setText("")
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/icons/icon/EpAdd.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.add_widget_btn.setIcon(icon4)
+        self.add_widget_btn.setIconSize(QtCore.QSize(20, 20))
+        self.add_widget_btn.setObjectName("add_widget_btn")
+        self.horizontalLayout_7.addWidget(self.add_widget_btn)
         spacerItem1 = QtWidgets.QSpacerItem(823, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_7.addItem(spacerItem1)
         self.horizontalLayout_2.addWidget(self.frame)
@@ -179,9 +189,9 @@ class Ui_Form(object):
         self.open_btn.setMinimumSize(QtCore.QSize(30, 29))
         self.open_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.open_btn.setText("")
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/icons/icon/EpArrowRight.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.open_btn.setIcon(icon4)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/icons/icon/EpArrowRight.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.open_btn.setIcon(icon5)
         self.open_btn.setIconSize(QtCore.QSize(20, 20))
         self.open_btn.setObjectName("open_btn")
         self.horizontalLayout_2.addWidget(self.open_btn)
