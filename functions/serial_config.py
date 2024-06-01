@@ -46,6 +46,7 @@ class SerialConfig(QObject):
         self.logger = None  # 初始化 logger 为 None
         self.log_enabled = False  # 初始日志记录状态为关闭
         self.loop_send_connected = False
+        self.serial_ui = None  # 初始化串口配置界面为 None
 
     def show_serial_config(self):
         """显示串口配置界面启动线程"""
@@ -59,10 +60,15 @@ class SerialConfig(QObject):
         #
         # self.serial_ui.move(x, y)
         # 初始获取串口
-        self.serial_ui = CreateSerialUi(self.serial_thread)
-        self.serial_ui.port_configured.connect(self.update_port_config)
-        self.serial_ui.show()
-        self.serial_thread.start()
+        if self.serial_ui is None:
+            self.serial_ui = CreateSerialUi(self.serial_thread)
+            self.serial_ui.port_configured.connect(self.update_port_config)
+
+        if not self.serial_ui.isVisible():
+            self.serial_ui.show()
+        else:
+            self.serial_ui.raise_()
+            self.serial_ui.activateWindow()
 
     def update_port_config(self, port, baudrate):
         """更新串口配置"""
@@ -107,6 +113,7 @@ class SerialConfig(QObject):
             message = f"Opened port {self.port} at {self.baudrate} baud\n"
         self.receive_text_edit.append(message)
         self.show_message_box(f"{self.port} Success", "success")
+        self.serial_thread.start()
 
     def on_connection_lost(self):
         """关闭串口"""
