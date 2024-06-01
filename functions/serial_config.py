@@ -41,9 +41,7 @@ class SerialConfig(QObject):
         self.serial_thread.worker.serial_connection_made.connect(self.on_connection_made)
         self.serial_thread.worker.serial_connection_lost.connect(self.on_connection_lost)
         self.serial_thread.worker.error_occurred.connect(self.display_error)
-        # 初始获取串口
-        self.serial_ui = CreateSerialUi(self.serial_thread)
-        self.serial_ui.port_configured.connect(self.update_port_config)
+
         self.loop_timer = QTimer(self)  # 定时器用于循环发送
         self.logger = None  # 初始化 logger 为 None
         self.log_enabled = False  # 初始日志记录状态为关闭
@@ -52,14 +50,17 @@ class SerialConfig(QObject):
     def show_serial_config(self):
         """显示串口配置界面启动线程"""
         # 获取按钮的位置和尺寸
-        btn_rect = self.serial_config_btn.geometry()
-        global_pos = self.serial_config_btn.mapToGlobal(QPoint(0, 0))
-
-        # 计算窗口的位置，使其显示在按钮的左侧
-        x = global_pos.x() - self.serial_ui.width() - 20
-        y = global_pos.y()
-
-        self.serial_ui.move(x, y)
+        # btn_rect = self.serial_config_btn.geometry()
+        # global_pos = self.serial_config_btn.mapToGlobal(QPoint(0, 0))
+        #
+        # # 计算窗口的位置，使其显示在按钮的左侧
+        # x = global_pos.x() - self.serial_ui.width() - 20
+        # y = global_pos.y()
+        #
+        # self.serial_ui.move(x, y)
+        # 初始获取串口
+        self.serial_ui = CreateSerialUi(self.serial_thread)
+        self.serial_ui.port_configured.connect(self.update_port_config)
         self.serial_ui.show()
         self.serial_thread.start()
 
