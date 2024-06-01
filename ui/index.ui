@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/icons/icon/icon.ico</normaloff>:/icons/icon/icon.ico</iconset>
+    <normaloff>:/icons/icon/favicon.ico</normaloff>:/icons/icon/favicon.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -83,7 +83,7 @@ QToolButton {
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">image: url(:/icons/icon/icon.ico);</string>
+         <string notr="true">image: url(:/icons/icon/favicon.ico);</string>
         </property>
         <property name="text">
          <string/>

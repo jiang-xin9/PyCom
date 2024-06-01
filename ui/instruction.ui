@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/icons/icon/icon.ico</normaloff>:/icons/icon/icon.ico</iconset>
+    <normaloff>:/icons/icon/favicon.ico</normaloff>:/icons/icon/favicon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
