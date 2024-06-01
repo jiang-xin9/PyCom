@@ -8,7 +8,8 @@ class SignalEmitter(QObject):
     def __init__(self):
         super().__init__()
 
-    def error_signal(self, message):
+    @staticmethod
+    def error_signal(message):
         """
         发送信号的方法。
 
@@ -17,14 +18,17 @@ class SignalEmitter(QObject):
         # self.universal_signal.emit(message)
         CustomMessageBox.show_box(message, "error")
 
-    def success_signal(self, message):
+    @staticmethod
+    def success_signal(message):
         # self.universal_signal.emit(message)
         CustomMessageBox.show_box(message, "success")
 
-    def custom_signal(self, message):
+    @staticmethod
+    def custom_signal(message):
         # self.universal_signal.emit(message)
         CustomMessageBox.show_box(message, "custom")
 
-    def warning_signal(self, message):
+    @staticmethod
+    def warning_signal(message):
         # self.universal_signal.emit(message)
         CustomMessageBox.show_box(message, "warning")
