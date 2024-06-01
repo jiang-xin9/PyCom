@@ -6,6 +6,7 @@ import serial.tools.list_ports
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
 from ui.serial_config import Serial_Form
+from functions.send_singer import SignalEmitter
 
 
 class CreateSerialUi(QWidget, Serial_Form):
@@ -47,6 +48,8 @@ class CreateSerialUi(QWidget, Serial_Form):
             self.serial_thread.open_serial_port(port, baud)
             self.port_configured.emit(port, baud)
             self.close_window()
+        else:
+            SignalEmitter.custom_signal(f"请先连接串口")
 
     def close_port(self):
         """关闭串口"""
