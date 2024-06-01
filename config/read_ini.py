@@ -21,7 +21,7 @@ class ConfigReader:
             self.config.read(self.file_path)
         except Exception as e:
             # print(f"Failed to read config file: {e}")
-            self.signal_emitter.error_signal(f"Failed to file: {e}")
+            SignalEmitter.error_signal(f"Failed to file: {e}")
 
     def get_value(self, default=None):
         """
