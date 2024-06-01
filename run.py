@@ -31,6 +31,7 @@ class PyCom(CFramelessBase, Ui_Form):
             serial_config_btn=self.serial_config_btn,
             send_btn=self.send_btn,
             command_line=self.command_line,
+            serial_com=self.serial_com,
             receive_text_edit=self.receive_textEdit,
             show_message_box=CustomMessageBox.show_box,
             check_time=self.check_time,

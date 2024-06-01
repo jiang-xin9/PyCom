@@ -8,7 +8,9 @@ from config.handel_config import log_folder_path
 
 
 class SerialConfig(QObject):
-    def __init__(self, serial_config_btn, send_btn, command_line, receive_text_edit,
+    def __init__(self, serial_config_btn, send_btn, command_line,
+                 serial_com,
+                 receive_text_edit,
                  show_message_box,
                  check_time,
                  check_enter,
@@ -21,6 +23,7 @@ class SerialConfig(QObject):
         self.serial_config_btn = serial_config_btn
         self.send_btn = send_btn
         self.command_line = command_line
+        self.serial_com = serial_com
         self.receive_text_edit = receive_text_edit
         self.show_message_box = show_message_box
         self.check_time = check_time
@@ -105,7 +108,7 @@ class SerialConfig(QObject):
             self.logger.log_signal.emit(message)
 
     def on_connection_made(self):
-        """打开串口"""
+        """打开串口，写入标题串口号"""
         if self.check_time.toggled:
             timestamp = QDateTime.currentDateTime().toString("HH:mm:ss.zzz")
             message = f"[{timestamp}] Opened port {self.port} at {self.baudrate} baud\n"
@@ -113,6 +116,8 @@ class SerialConfig(QObject):
             message = f"Opened port {self.port} at {self.baudrate} baud\n"
         self.receive_text_edit.append(message)
         self.show_message_box(f"{self.port} Success", "success")
+        if self.port:
+            self.serial_com.setText(f"{self.port}")
         self.serial_thread.start()
 
     def on_connection_lost(self):
