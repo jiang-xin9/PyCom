@@ -1,5 +1,5 @@
 import csv
-
+from functions.send_singer import SignalEmitter
 from PyQt5.QtWidgets import QFileDialog
 
 
@@ -16,7 +16,9 @@ class Tool:
                 reader = csv.reader(csvfile)
                 return [row for row in reader]
         except FileNotFoundError:
-            pass
+            SignalEmitter.error_signal("目标目录没有文件")
+        except Exception:
+            SignalEmitter.error_signal("发生未知文件错误")
 
     def clear_widget(self, widget):
         """传入控件，清空内容"""

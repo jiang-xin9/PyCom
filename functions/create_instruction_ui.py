@@ -24,8 +24,6 @@ class CreateInstructionUi(QWidget, Instruction_Form):
     def init_singers(self):
         """初始化信号槽"""
         self.file_path_line.setCursorPosition(0)  # 设置光标位置为最左边
-        self.start_btn.setEnabled(False)
-        self.start_btn.clicked.connect(self.update_style)
         # 获取文件路径
         self.get_file_path.clicked.connect(lambda line: self.tool.get_file_path(self.file_path_line))
         self.file_path_line.textChanged.connect(self.handle_file_path)
@@ -45,12 +43,7 @@ class CreateInstructionUi(QWidget, Instruction_Form):
         if ".csv" not in text[-1]:
             CustomMessageBox.show_box("非csv文件，无法加载", "warning", self)
         else:
-            self.start_btn.setEnabled(True)
             self.create_widget(self.tool.read_csv_by_command(path))
-
-    def update_style(self):
-        # 67C23A
-        pass
 
     def create_instruction_closure(self, line_edit):
         """添加实现点击"""
