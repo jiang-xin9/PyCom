@@ -1,7 +1,6 @@
 from PyQt5.QtGui import QFontMetrics
 from PyQt5.QtWidgets import QLineEdit, QSizePolicy
 
-
 class NewLineEdit(QLineEdit):
     def __init__(self, text="", parent=None):
         super().__init__(text, parent)
@@ -19,13 +18,15 @@ class NewLineEdit(QLineEdit):
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.adjustSizeToText()
 
+        # Set cursor position to the start only on initialization
+        self.setCursorPosition(0)
+
         self.textChanged.connect(self.adjustSizeToText)
 
     def adjustSizeToText(self):
-        # font_metrics = QFontMetrics(self.font())
-        # text_width = font_metrics.width(self.text()) + 20
-        # self.setMinimumWidth(text_width)  # 设置最小宽度而不是固定宽度
-        self.setCursorPosition(0)  # 设置光标位置为最左边
+        font_metrics = QFontMetrics(self.font())
+        text_width = font_metrics.width(self.text()) + 20
+        self.setMinimumWidth(text_width)  # 设置最小宽度而不是固定宽度
 
     def enterEvent(self, event):
         super().enterEvent(event)
