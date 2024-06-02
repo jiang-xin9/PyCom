@@ -94,7 +94,7 @@ class InstructionConfig(QObject):
                 label_timer.setObjectName(f"label_timer_{index + 1}")
                 label_timer.setFixedSize(80, 30)
 
-                label_send = FixedLabel("待发送")
+                label_send = FixedLabel("待执行")
                 label_send.setObjectName(f"label_send_{index + 1}")
 
                 row_layout.addWidget(line_edit)
