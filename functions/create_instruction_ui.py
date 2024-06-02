@@ -18,6 +18,7 @@ class CreateInstructionUi(QWidget, Instruction_Form):
         self.file_path_line.setCursorPosition(0)
         self.get_file_path.clicked.connect(self.get_file_path_clicked)
         self.file_path_line.textChanged.connect(self.handle_file_path)
+        self.start_btn.clicked.connect(self.start_clock_csv)
 
     def get_file_path_clicked(self):
         """获取文件路径"""
@@ -46,6 +47,8 @@ class CreateInstructionUi(QWidget, Instruction_Form):
         self.command_line.setText(text)
         self.send_btn.click()
 
-    def create_widget(self, commands):
-        """添加指令"""
-        self.instruction_config.create_widget(commands)
+    def start_clock_csv(self):
+        """启动定时"""
+        if self.file_path_line.text():
+            self.instruction_config.commands = self.tool.read_csv_by_command(self.file_path_line.text())
+            self.instruction_config.start_sequence()
