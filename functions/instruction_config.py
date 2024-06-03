@@ -7,11 +7,12 @@ from coustom_ui.lineEdit import NewLineEdit
 
 
 class InstructionConfig(QObject):
-    def __init__(self, file_path_line, tool, frame_2, serial_config):
+    def __init__(self, file_path_line, tool, frame_2, start_btn, serial_config):
         super().__init__()
         self.tool = tool
         self.file_path_line = file_path_line
         self.serial_config = serial_config
+        self.start_btn = start_btn
         self.frame_2 = frame_2
         self.commands = []  # 用于存储命令
         self.current_index = 0  # 当前执行命令的索引
@@ -70,6 +71,7 @@ class InstructionConfig(QObject):
                 self.timer.start(interval)  # 设置下一个命令的定时器
             else:
                 self.timer.stop()  # 如果是最后一个命令，停止定时器
+                self.start_btn.setText("开始执行")
         else:
             self.timer.stop()  # 所有命令执行完后，停止定时器
 

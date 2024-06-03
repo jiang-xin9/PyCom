@@ -10,7 +10,9 @@ class CreateInstructionUi(QWidget, Instruction_Form):
         self.setupUi(self)
         self.tool = Tool()
         self.init_singers()
-        self.instruction_config = InstructionConfig(self.file_path_line, self.tool, self.frame_2, serial_config)
+        self.instruction_config = InstructionConfig(self.file_path_line, self.tool,
+                                                    self.frame_2, self.start_btn,
+                                                    serial_config)
         self.default_command()
 
     def init_singers(self):

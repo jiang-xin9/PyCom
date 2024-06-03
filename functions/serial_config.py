@@ -79,9 +79,9 @@ class SerialConfig(QObject):
         self.port = port
         self.baudrate = baudrate
 
-    def send_message(self, command):
+    def send_message(self, command=None):
         """发送消息"""
-        if command is None:
+        if not command:
             message = self.command_line.text()
             self.serial_thread.send_data(message)
         else:
