@@ -25,6 +25,7 @@ class SerialConfig(QObject):
         self.log_enabled = False
         self.loop_send_connected = False
         self.serial_ui = None
+        self.port_opened = False
 
     def setup_ui_components(self, serial_config_btn, send_btn, command_line,
                             serial_com, receive_text_edit, show_message_box,
@@ -103,6 +104,7 @@ class SerialConfig(QObject):
 
     def on_connection_made(self):
         """串口连接建立时的处理"""
+        self.port_opened = True  # 标记串口已打开
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
         message = f"[{timestamp}] Opened port {self.port} at {self.baudrate} baud\n" \
             if timestamp else f"Opened port {self.port} at {self.baudrate} baud\n"
@@ -113,6 +115,7 @@ class SerialConfig(QObject):
 
     def on_connection_lost(self):
         """串口连接丢失时的处理"""
+        self.port_opened = False  # 标记串口已关闭
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
         message = f"[{timestamp}] Closed port" if timestamp else "Closed port"
         self.append_to_receive_text_edit(message)
@@ -200,3 +203,7 @@ class SerialConfig(QObject):
         """记录消息到日志"""
         if self.logger:
             self.logger.log_signal.emit(message)
+
+    def is_port_open(self):
+        """检查串口是否已打开"""
+        return self.port_opened
