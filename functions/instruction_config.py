@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QObject, QTimer, Qt
-from PyQt5.QtWidgets import QHBoxLayout, QWidget, QVBoxLayout, QApplication, QLabel, QLineEdit
+from PyQt5.QtWidgets import QHBoxLayout
 from config.handel_config import instruction_config
-from coustom_ui.message_prompt import CustomMessageBox
+from functions.send_singer import SignalEmitter
 from coustom_ui.fixedlabel import FixedLabel
 from coustom_ui.lineEdit import NewLineEdit
 
@@ -39,6 +39,9 @@ class InstructionConfig(QObject):
 
     def start_sequence(self):
         """开始依次执行命令"""
+        if not self.serial_config.is_port_open():
+            SignalEmitter.error_signal("串口未打开，无法发送指令")
+            return
         if self.commands:
             self.current_index = 0
             self.update_all_labels_to_waiting()
@@ -50,7 +53,7 @@ class InstructionConfig(QObject):
             command_text = f"label_send_{index + 1}"
             label_send = self.frame_2.findChild(FixedLabel, command_text)
             if label_send:
-                label_send.set_custom_style("background-color: orange;")
+                label_send.set_custom_style("background-color: orange; color: rgb(255, 255, 255);")
                 label_send.setText("待执行")
                 label_send.setAlignment(Qt.AlignCenter)
 
@@ -70,6 +73,9 @@ class InstructionConfig(QObject):
         else:
             self.timer.stop()  # 所有命令执行完后，停止定时器
 
+    def stop_sequence(self):
+        self.timer.stop()
+
     def update_command(self, index):
         """更新指令"""
         command_text = f"label_send_{index + 1}"
@@ -80,7 +86,7 @@ class InstructionConfig(QObject):
 
     def csv_message(self, path, text):
         if ".csv" not in text[-1]:
-            CustomMessageBox.show_box("非csv文件，无法加载", "warning", self)
+            SignalEmitter.warning_signal("非csv文件，无法加载")
         else:
             self.commands = self.tool.read_csv_by_command(path)
 
