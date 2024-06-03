@@ -49,6 +49,10 @@ class CreateInstructionUi(QWidget, Instruction_Form):
 
     def start_clock_csv(self):
         """启动定时"""
-        if self.file_path_line.text():
+        if self.start_btn.text() == "暂停执行":
+            self.start_btn.setText("开始执行")
+            self.instruction_config.stop_sequence()
+        elif self.file_path_line.text():
+            self.start_btn.setText("暂停执行")
             self.instruction_config.commands = self.tool.read_csv_by_command(self.file_path_line.text())
             self.instruction_config.start_sequence()
