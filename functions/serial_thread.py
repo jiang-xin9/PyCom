@@ -3,9 +3,9 @@ from PyQt5.QtCore import QThread
 from functions.serial_work import SerialWorker
 
 class SerialThread(QThread):
-    def __init__(self, check_enter):
+    def __init__(self, check_enter, check_hex_receive, check_hex_send):
         super().__init__()
-        self.worker = SerialWorker(check_enter)
+        self.worker = SerialWorker(check_enter, check_hex_receive, check_hex_send)
         self.loop = None
 
     def run(self):

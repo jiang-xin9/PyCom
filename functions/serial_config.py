@@ -10,12 +10,14 @@ class SerialConfig(QObject):
     def __init__(self, serial_config_btn, send_btn, command_line,
                  serial_com, receive_text_edit, show_message_box,
                  check_time, check_enter, check_loop_send,
-                 line_delayed, check_save_log, line_log):
+                 line_delayed, check_save_log, line_log,
+                 check_hex_receive, check_hex_send):
         super().__init__()
         self.setup_ui_components(serial_config_btn, send_btn, command_line,
                                  serial_com, receive_text_edit, show_message_box,
                                  check_time, check_enter, check_loop_send,
-                                 line_delayed, check_save_log, line_log)
+                                 line_delayed, check_save_log, line_log,
+                                 check_hex_receive, check_hex_send)
 
         self.setup_signals()
         self.setup_serial_thread()
@@ -30,7 +32,8 @@ class SerialConfig(QObject):
     def setup_ui_components(self, serial_config_btn, send_btn, command_line,
                             serial_com, receive_text_edit, show_message_box,
                             check_time, check_enter, check_loop_send,
-                            line_delayed, check_save_log, line_log):
+                            line_delayed, check_save_log, line_log,
+                            check_hex_receive, check_hex_send):
         """初始化UI组件"""
         self.serial_config_btn = serial_config_btn
         self.send_btn = send_btn
@@ -44,6 +47,8 @@ class SerialConfig(QObject):
         self.line_delayed = line_delayed
         self.check_save_log = check_save_log
         self.line_log = line_log
+        self.check_hex_receive = check_hex_receive
+        self.check_hex_send = check_hex_send
 
     def setup_signals(self):
         """绑定信号与槽"""
@@ -54,7 +59,7 @@ class SerialConfig(QObject):
 
     def setup_serial_thread(self):
         """设置串口线程"""
-        self.serial_thread = SerialThread(self.check_enter)
+        self.serial_thread = SerialThread(self.check_enter,self.check_hex_receive, self.check_hex_send)
         self.serial_thread.worker.received_data.connect(self.display_message)
         self.serial_thread.worker.data_sent.connect(self.display_sent_message)
         self.serial_thread.worker.serial_connection_made.connect(self.on_connection_made)
