@@ -16,8 +16,10 @@ class SerialConfig(QObject):
                                  serial_com, receive_text_edit, show_message_box,
                                  check_time, check_enter, check_loop_send,
                                  line_delayed, check_save_log, line_log)
+
         self.setup_signals()
         self.setup_serial_thread()
+
         self.loop_timer = QTimer(self)
         self.logger = None
         self.log_enabled = False
@@ -46,8 +48,8 @@ class SerialConfig(QObject):
         """绑定信号与槽"""
         self.serial_config_btn.clicked.connect(self.show_serial_config)
         self.send_btn.clicked.connect(self.send_message)
-        self.check_loop_send.toggled.connect(self.toggle_loop_send)
-        self.check_save_log.toggled.connect(self.toggle_save_log)
+        self.check_loop_send.toggled_signal.connect(self.toggle_loop_send)
+        self.check_save_log.toggled_signal.connect(self.toggle_save_log)
 
     def setup_serial_thread(self):
         """设置串口线程"""
@@ -57,6 +59,7 @@ class SerialConfig(QObject):
         self.serial_thread.worker.serial_connection_made.connect(self.on_connection_made)
         self.serial_thread.worker.serial_connection_lost.connect(self.on_connection_lost)
         self.serial_thread.worker.error_occurred.connect(self.display_error)
+        self.serial_thread.start()
 
     def show_serial_config(self):
         """显示串口配置界面"""
@@ -82,14 +85,14 @@ class SerialConfig(QObject):
 
     def display_message(self, message):
         """显示接收到的消息"""
-        timestamp = self.get_timestamp() if self.check_time.isChecked() else ""
+        timestamp = self.get_timestamp() if self.check_time.toggled else ""
         formatted_message = f"[{timestamp}] 收←: {message}" if timestamp else f"收<: {message}"
         self.append_to_receive_text_edit(formatted_message)
         self.log_message(formatted_message)
 
     def display_sent_message(self, message):
         """显示已发送的消息"""
-        timestamp = self.get_timestamp() if self.check_time.isChecked() else ""
+        timestamp = self.get_timestamp() if self.check_time.toggled else ""
         formatted_message = f"[{timestamp}] 发→: {message}" if timestamp else f"发>: {message}"
         self.append_to_receive_text_edit(formatted_message)
         self.limit_text_edit_size()
@@ -97,17 +100,16 @@ class SerialConfig(QObject):
 
     def on_connection_made(self):
         """串口连接建立时的处理"""
-        timestamp = self.get_timestamp() if self.check_time.isChecked() else ""
+        timestamp = self.get_timestamp() if self.check_time.toggled else ""
         message = f"[{timestamp}] Opened port {self.port} at {self.baudrate} baud\n" if timestamp else f"Opened port {self.port} at {self.baudrate} baud\n"
         self.append_to_receive_text_edit(message)
         self.show_message_box(f"{self.port} Success", "success")
         if self.port:
             self.serial_com.setText(self.port)
-        self.serial_thread.start()
 
     def on_connection_lost(self):
         """串口连接丢失时的处理"""
-        timestamp = self.get_timestamp() if self.check_time.isChecked() else ""
+        timestamp = self.get_timestamp() if self.check_time.toggled else ""
         message = f"[{timestamp}] Closed port" if timestamp else "Closed port"
         self.append_to_receive_text_edit(message)
         self.show_message_box(f"{self.port} Disconnect", "success")
@@ -115,7 +117,7 @@ class SerialConfig(QObject):
 
     def display_error(self, error):
         """显示错误消息"""
-        timestamp = self.get_timestamp() if self.check_time.isChecked() else ""
+        timestamp = self.get_timestamp() if self.check_time.toggled else ""
         error_message = f"[{timestamp}] {error}" if timestamp else error
         self.append_to_receive_text_edit(error_message)
         self.show_message_box(f"{self.port} Disconnect", "error")
@@ -188,7 +190,7 @@ class SerialConfig(QObject):
 
     def append_to_receive_text_edit(self, message):
         """将消息追加到接收文本编辑框"""
-        self.receive_text_edit.append(f"{message}\n")
+        self.receive_text_edit.append(f"{message}")
 
     def log_message(self, message):
         """记录消息到日志"""
