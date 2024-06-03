@@ -7,10 +7,11 @@ from coustom_ui.lineEdit import NewLineEdit
 
 
 class InstructionConfig(QObject):
-    def __init__(self, file_path_line, tool, frame_2):
+    def __init__(self, file_path_line, tool, frame_2, serial_config):
         super().__init__()
         self.tool = tool
         self.file_path_line = file_path_line
+        self.serial_config = serial_config
         self.frame_2 = frame_2
         self.commands = []  # 用于存储命令
         self.current_index = 0  # 当前执行命令的索引
@@ -57,7 +58,9 @@ class InstructionConfig(QObject):
         """执行当前命令"""
         if self.current_index < len(self.commands):
             command = self.commands[self.current_index]
+            command_text = command[0]   # 获取当前命令文本
             interval = int(command[1])  # 获取当前命令的延时时间
+            self.serial_config.send_message(command_text)
             self.update_command(self.current_index)  # 更新当前命令
             self.current_index += 1
             if self.current_index < len(self.commands):
@@ -73,7 +76,7 @@ class InstructionConfig(QObject):
         label_send = self.frame_2.findChild(FixedLabel, command_text)
         if label_send:
             label_send.setText("已执行")
-            label_send.set_custom_style("background-color: #55ff7f; text-align: center;")
+            label_send.set_custom_style("background-color: rgb(149,212,117); text-align: center; color: rgb(255, 255, 255);")
 
     def csv_message(self, path, text):
         if ".csv" not in text[-1]:

@@ -78,10 +78,13 @@ class SerialConfig(QObject):
         self.port = port
         self.baudrate = baudrate
 
-    def send_message(self):
+    def send_message(self, command):
         """发送消息"""
-        message = self.command_line.text()
-        self.serial_thread.send_data(message)
+        if command is None:
+            message = self.command_line.text()
+            self.serial_thread.send_data(message)
+        else:
+            self.serial_thread.send_data(command)
 
     def display_message(self, message):
         """显示接收到的消息"""
@@ -101,7 +104,8 @@ class SerialConfig(QObject):
     def on_connection_made(self):
         """串口连接建立时的处理"""
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
-        message = f"[{timestamp}] Opened port {self.port} at {self.baudrate} baud\n" if timestamp else f"Opened port {self.port} at {self.baudrate} baud\n"
+        message = f"[{timestamp}] Opened port {self.port} at {self.baudrate} baud\n" \
+            if timestamp else f"Opened port {self.port} at {self.baudrate} baud\n"
         self.append_to_receive_text_edit(message)
         self.show_message_box(f"{self.port} Success", "success")
         if self.port:

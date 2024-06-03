@@ -59,7 +59,7 @@ class PyCom(CFramelessBase, Ui_Form):
         self.back_expand = BackExpand(self)  # 按钮收缩侧边栏
 
     def show_instruction(self):
-        self.instruction_window = CreateInstructionUi()
+        self.instruction_window = CreateInstructionUi(self.serial)
         self.instruction_window.show()
 
     def init_signals(self):

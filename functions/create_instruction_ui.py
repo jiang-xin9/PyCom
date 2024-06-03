@@ -5,12 +5,12 @@ from functions.instruction_config import InstructionConfig
 
 
 class CreateInstructionUi(QWidget, Instruction_Form):
-    def __init__(self):
+    def __init__(self, serial_config):
         super().__init__()
         self.setupUi(self)
         self.tool = Tool()
         self.init_singers()
-        self.instruction_config = InstructionConfig(self.file_path_line, self.tool, self.frame_2)
+        self.instruction_config = InstructionConfig(self.file_path_line, self.tool, self.frame_2, serial_config)
         self.default_command()
 
     def init_singers(self):
