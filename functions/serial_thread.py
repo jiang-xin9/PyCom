@@ -2,7 +2,6 @@ import asyncio
 from PyQt5.QtCore import QThread
 from functions.serial_work import SerialWorker
 
-
 class SerialThread(QThread):
     def __init__(self, check_enter):
         super().__init__()
