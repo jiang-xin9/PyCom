@@ -49,7 +49,7 @@ class CreateFastBtn:
             line_edit = NewLineEdit(command)
             button1 = QPushButton("发送1")
 
-            line_edit.setFixedHeight(25)
+            line_edit.setMinimumSize(180, 25)  # 最小显示宽度
             button1.setFixedSize(40, 25)
             button1.clicked.connect(self.create_button_clicked_closure(line_edit))
 

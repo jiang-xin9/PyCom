@@ -2,6 +2,7 @@
 # author: 清安安
 # CSDN: 清安无别事
 # file_time: 2024/5/26 11:11
+import asyncio
 import serial.tools.list_ports
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
@@ -11,12 +12,13 @@ from functions.send_singer import SignalEmitter
 
 class CreateSerialUi(QWidget, Serial_Form):
     port_configured = pyqtSignal(str, int)
+    close_requested = pyqtSignal()
 
-    def __init__(self, serial_thread, parent=None):
+    def __init__(self, serial_worker, parent=None):
         super(CreateSerialUi, self).__init__(parent)
         self.setupUi(self)
         self.init_singers()
-        self.serial_thread = serial_thread
+        self.serial_worker = serial_worker
 
     def init_singers(self):
         self.Com_Refresh_Button.clicked.connect(self.refresh_ports)
@@ -41,16 +43,15 @@ class CreateSerialUi(QWidget, Serial_Form):
             self.Com_Name_Combo.addItem(port.device)
 
     def open_port(self):
-        """打开串口"""
-        port = self.Com_Name_Combo.currentText()  # 串口
-        baud = int(self.Com_Baud_Combo.currentText())  # 波特率
+        port = self.Com_Name_Combo.currentText()
+        baud = int(self.Com_Baud_Combo.currentText())
         if port:
-            self.serial_thread.open_serial_port(port, baud)
             self.port_configured.emit(port, baud)
-            self.close_window()
+            asyncio.create_task(self.serial_worker.open_serial_port(port, baud))
+            self.close()
         else:
-            SignalEmitter.custom_signal(f"请先连接串口")
+            SignalEmitter.warning_signal("串口未配置")
 
     def close_port(self):
         """关闭串口"""
-        self.serial_thread.close_serial_port()
+        self.close_requested.emit()

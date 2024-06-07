@@ -1,21 +1,25 @@
+import asyncio
 from PyQt5.QtCore import Qt, QEvent
-from PyQt5.QtGui import QKeyEvent
+from PyQt5.QtGui import QKeyEvent, QIcon
 from PyQt5.QtWidgets import QApplication
+from qasync import QEventLoop
 from ui.index import Ui_Form
 from functions.tool import Tool
 from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
 from functions.serial_config import SerialConfig
 from functions.create_instruction_ui import CreateInstructionUi
+from functions.instruction_config import InstructionConfig
 from coustom_ui.message_prompt import CustomMessageBox
 from functions.reset_window_size_func import CFramelessBase
+from functions.create_upgrade_ui import CreateUpgradeUi
 
 
 class PyCom(CFramelessBase, Ui_Form):
     def __init__(self):
         super(PyCom, self).__init__()
         self.setupUi(self)
-
+        CustomMessageBox.default_parent = self  # 设置默认父窗口
         self.tool = Tool()
         self.init_ui_components()
         self.init_signals()
@@ -61,8 +65,13 @@ class PyCom(CFramelessBase, Ui_Form):
         self.back_expand = BackExpand(self)  # 按钮收缩侧边栏
 
     def show_instruction(self):
-        self.instruction_window = CreateInstructionUi(self.serial)
-        self.instruction_window.show()
+        self.instruction_config = InstructionConfig(self.serial)
+        self.instruction_config.show_instruction_config()
+
+    def show_upgrade(self):
+        self.upgrade_window = CreateUpgradeUi()
+        # self.upgrade_window.upgrade_signal.connect(self.serial)
+        self.upgrade_window.show()
 
     def init_signals(self):
         """初始化信号连接"""
@@ -72,17 +81,20 @@ class PyCom(CFramelessBase, Ui_Form):
         self.clear_send_text.clicked.connect(lambda: self.tool.clear_widget(self.command_line))
         self.clear_receive_text.clicked.connect(lambda: self.tool.clear_widget(self.receive_textEdit))
         self.send_instruction_btn.clicked.connect(self.show_instruction)
+        self.upgrade_btn.clicked.connect(self.show_upgrade)
         self.command_line.installEventFilter(self)
 
     def toggle_maximize_restore(self):
         """切换窗口的最大化和恢复"""
         if self.is_maximized:
             self.setGeometry(self.normalGeometry)
+            self.max_btn.setIcon(QIcon(':icons/icon/EpFullScreen.png'))  # 设定放大图标
             self.is_maximized = False
         else:
             self.normalGeometry = self.geometry()
             screen_geometry = QApplication.primaryScreen().availableGeometry()
             self.setGeometry(screen_geometry.adjusted(-5, -5, 5, 5))  # 手动增加尺寸
+            self.max_btn.setIcon(QIcon(':icons/icon/MageMinimize.png'))  # 设定最小化图标
             self.is_maximized = True
 
     def eventFilter(self, obj, event):
@@ -112,6 +124,9 @@ class PyCom(CFramelessBase, Ui_Form):
 
 if __name__ == '__main__':
     app = QApplication([])
+    loop = QEventLoop(app)
+    asyncio.set_event_loop(loop)
     window = PyCom()
     window.show()
-    app.exec_()
+    with loop:
+        loop.run_forever()

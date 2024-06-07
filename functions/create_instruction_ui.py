@@ -1,19 +1,16 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget
 from functions.tool import Tool
 from ui.instruction import Instruction_Form
-from functions.instruction_config import InstructionConfig
 
 
 class CreateInstructionUi(QWidget, Instruction_Form):
-    def __init__(self, serial_config):
-        super().__init__()
+    def __init__(self, serial_config, instruction_config):
+        super().__init__(None, Qt.Window)
         self.setupUi(self)
-        self.tool = Tool()
+        self.serial_config = serial_config
+        self.instruction_config = instruction_config
         self.init_singers()
-        self.instruction_config = InstructionConfig(self.file_path_line, self.tool,
-                                                    self.frame_2, self.start_btn,
-                                                    serial_config)
-        self.default_command()
 
     def init_singers(self):
         """初始化信号槽"""
@@ -24,15 +21,11 @@ class CreateInstructionUi(QWidget, Instruction_Form):
 
     def get_file_path_clicked(self):
         """获取文件路径"""
-        self.tool.get_file_path(self.file_path_line)
+        self.instruction_config.tool.get_file_path(self.file_path_line)
 
     def handle_file_path(self):
         """处理文件路径"""
         self.instruction_config.handle_file_path()
-
-    def default_command(self):
-        """设置默认指令"""
-        self.instruction_config.default_command()
 
     def create_instruction_closure(self, line_edit):
         """添加实现点击"""
@@ -56,5 +49,5 @@ class CreateInstructionUi(QWidget, Instruction_Form):
             self.instruction_config.stop_sequence()
         elif self.file_path_line.text():
             self.start_btn.setText("暂停执行")
-            self.instruction_config.commands = self.tool.read_csv_by_command(self.file_path_line.text())
+            self.instruction_config.commands = self.instruction_config.tool.read_csv_by_command(self.file_path_line.text())
             self.instruction_config.start_sequence()

@@ -15,21 +15,30 @@ class SerialWorker(QObject):
         self.check_enter = check_enter
         self.check_hex_receive = check_hex_receive
         self.check_hex_send = check_hex_send
+        self.port_opened = False
+        self.closing = False
 
     async def open_serial_port(self, port, baudrate):
+        if self.port_opened:
+            await self.close_serial_port()
         try:
             loop = asyncio.get_event_loop()
             self.transport, protocol = await serial_asyncio.create_serial_connection(
                 loop, lambda: SerialProtocol(self), port, baudrate)
+            self.port_opened = True
             self.serial_connection_made.emit()
         except Exception as e:
             self.error_occurred.emit(str(e))
 
-    def close_serial_port(self):
-        if self.transport:
+    async def close_serial_port(self):
+        if self.transport and self.port_opened and not self.closing:
+            self.closing = True
             self.transport.close()
             self.transport = None
+            self.port_opened = False
+            await asyncio.sleep(0.1)  # 等待资源完全释放
             self.serial_connection_lost.emit()
+            self.closing = False
 
     def send_data(self, data):
         if self.transport:
@@ -42,6 +51,10 @@ class SerialWorker(QObject):
                 self.data_sent.emit(data)
             except Exception as e:
                 self.error_occurred.emit(str(e))
+
+    def is_port_open(self):
+        return self.port_opened
+
 
 class SerialProtocol(asyncio.Protocol):
     def __init__(self, worker):
@@ -59,14 +72,13 @@ class SerialProtocol(asyncio.Protocol):
             self.worker.received_data.emit(message)
             self.buffer.clear()
         else:
-            while True:
-                if b'\r\n' not in self.buffer:
-                    break
+            while b'\r\n' in self.buffer:
                 line, self.buffer = self.buffer.split(b'\r\n', 1)
                 if line:
                     message = line.decode('utf-8').strip()
                     self.worker.received_data.emit(message)
 
     def connection_lost(self, exc):
-        self.worker.serial_connection_lost.emit()
+        if not self.worker.closing:
+            self.worker.serial_connection_lost.emit()
         self.transport = None

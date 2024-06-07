@@ -37,6 +37,17 @@ class Tool:
     def append_text(widget, text):
         widget.append(text)
 
+    def handle_file_path(self, widget):
+        """处理获取到的路径"""
+        path = widget.text()
+        if '/' in path:
+            csv = path.split('/')
+        elif '//' in path:
+            csv = path.split("//")
+        else:
+            csv = path.split("\\")
+        return path, csv
+
 # 使用示例
 # if __name__ == '__main__':
 #     csv_reader = Tool()
