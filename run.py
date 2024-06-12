@@ -8,11 +8,11 @@ from functions.tool import Tool
 from functions.fast_btn_func import CreateFastBtn
 from functions.back_expand_func import BackExpand
 from functions.serial_config import SerialConfig
-from functions.create_instruction_ui import CreateInstructionUi
 from functions.instruction_config import InstructionConfig
 from coustom_ui.message_prompt import CustomMessageBox
 from functions.reset_window_size_func import CFramelessBase
 from functions.create_upgrade_ui import CreateUpgradeUi
+from functions.parameter_filter_config import CreateParameterFilterConfig
 
 
 class PyCom(CFramelessBase, Ui_Form):
@@ -50,6 +50,9 @@ class PyCom(CFramelessBase, Ui_Form):
 
         # 添加拖拽功能到 top_Frame
         self.top_Frame.installEventFilter(self)
+
+        self.parameter_filter = CreateParameterFilterConfig()
+        self.parameter_filter_btn.clicked.connect(self.parameter_filter.show_parameter_filter_config)
 
         self.show()
 
