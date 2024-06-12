@@ -100,14 +100,14 @@ class SerialConfig(QObject):
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
         message = f"[{timestamp}] Closed port" if timestamp else "Closed port"
         self.append_to_receive_text_edit(message)
-        self.show_message_box(f"{self.port} Disconnect", "success",self.serial_ui)
+        self.show_message_box(f"{self.port} Disconnect", "success", self.serial_ui)
         self.stop_saving_log()
 
     def display_error(self, error):
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
         error_message = f"[{timestamp}] {error}" if timestamp else error
         self.append_to_receive_text_edit(error_message)
-        self.show_message_box(f"{self.port} Disconnect", "error")
+        self.show_message_box(f"{self.port} Disconnect", "error", self.serial_ui)
 
     def toggle_loop_send(self, toggled):
         self.start_loop_send() if toggled else self.stop_loop_send()

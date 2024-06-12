@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget
 from functions.tool import Tool
 from ui.instruction import Instruction_Form
-
+from functions.send_singer import SignalEmitter
 
 class CreateInstructionUi(QWidget, Instruction_Form):
     def __init__(self, serial_config, instruction_config):
@@ -51,3 +51,5 @@ class CreateInstructionUi(QWidget, Instruction_Form):
             self.start_btn.setText("暂停执行")
             self.instruction_config.commands = self.instruction_config.tool.read_csv_by_command(self.file_path_line.text())
             self.instruction_config.start_sequence()
+        else:
+            SignalEmitter.warning_signal("文件路径为空", self)

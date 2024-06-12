@@ -41,13 +41,12 @@ class InstructionConfig(QObject):
             self.commands = self.tool.read_csv_by_command(instruction_config)
             self.create_widget(self.commands)
         except Exception as e:
-            print(f"Error reading commands: {e}")
             return None
 
     def start_sequence(self):
         """开始依次执行命令"""
         if not self.serial_config.serial_worker.is_port_open():
-            SignalEmitter.error_signal("串口未打开，无法发送指令")
+            SignalEmitter.error_signal("串口未打开，无法发送指令", self.instruction_window)
             return
         if self.commands:
             self.current_index = 0
@@ -95,7 +94,7 @@ class InstructionConfig(QObject):
 
     def csv_message(self, path, text):
         if ".csv" not in text[-1]:
-            SignalEmitter.warning_signal("非csv文件，无法加载")
+            SignalEmitter.warning_signal("非csv文件，无法加载", self.instruction_window)
         else:
             self.commands = self.tool.read_csv_by_command(path)
             self.create_widget(self.commands)  # 确保命令加载后刷新UI

@@ -50,7 +50,7 @@ class CreateSerialUi(QWidget, Serial_Form):
             asyncio.create_task(self.serial_worker.open_serial_port(port, baud))
             self.close()
         else:
-            SignalEmitter.warning_signal("串口未配置")
+            SignalEmitter.warning_signal("串口未配置", self)
 
     def close_port(self):
         """关闭串口"""
