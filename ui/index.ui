@@ -291,13 +291,13 @@ QFrame#tag_frame {
 	background-color: rgb(255, 255, 255);
 }
 QToolButton {
-	background-color: rgb(236, 245, 255);
+	background-color: rgb(64, 158, 255);
 	border-radius: 5px;
 	color: rgb(64, 158, 255);
 	border: 0.5px solid rgb(64, 158, 255); 
 }
 QToolButton::hover {
-	background-color: rgb(64, 158, 255);
+	background-color: rgb(121, 187, 255);
 	color: rgb(255, 255, 255);
 }</string>
         </property>
