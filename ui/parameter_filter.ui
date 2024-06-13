@@ -179,6 +179,9 @@
                   <height>30</height>
                  </size>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="layoutDirection">
                  <enum>Qt::LeftToRight</enum>
                 </property>
@@ -194,6 +197,9 @@
                   <width>0</width>
                   <height>30</height>
                  </size>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="text">
                  <string>启动捕获</string>
@@ -334,6 +340,9 @@
                <width>0</width>
                <height>30</height>
               </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="text">
               <string>开始过滤</string>
