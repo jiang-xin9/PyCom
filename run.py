@@ -12,7 +12,6 @@ from functions.instruction_config import InstructionConfig
 from coustom_ui.message_prompt import CustomMessageBox
 from functions.reset_window_size_func import CFramelessBase
 from functions.create_upgrade_ui import CreateUpgradeUi
-from functions.parameter_filter_config import CreateParameterFilterConfig
 
 
 class PyCom(CFramelessBase, Ui_Form):
@@ -44,15 +43,13 @@ class PyCom(CFramelessBase, Ui_Form):
             line_delayed=self.line_delayed,
             check_save_log=self.check_save_log,
             line_log=self.line_log,
-            check_hex_receive = self.check_hex_receive,
-            check_hex_send = self.check_hex_send
+            check_hex_receive=self.check_hex_receive,
+            check_hex_send=self.check_hex_send,
+            parameter_filter_btn = self.parameter_filter_btn
         )
 
         # 添加拖拽功能到 top_Frame
         self.top_Frame.installEventFilter(self)
-
-        self.parameter_filter = CreateParameterFilterConfig()
-        self.parameter_filter_btn.clicked.connect(self.parameter_filter.show_parameter_filter_config)
 
         self.show()
 
