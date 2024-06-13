@@ -101,7 +101,7 @@ class SerialConfig(QObject):
             self.serial_worker.send_data(command)
 
     def display_message(self, message):
-        if self.filter_condition:   # 判断数据
+        if self.filter_condition:  # 判断数据
             if isinstance(self.filter_condition, tuple) and len(self.filter_condition) == 2:
                 re_text_1, re_text_2 = self.filter_condition
                 pattern = re.compile(re_text_1 + r".*?" + re_text_2)

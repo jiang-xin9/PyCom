@@ -45,7 +45,7 @@ class PyCom(CFramelessBase, Ui_Form):
             line_log=self.line_log,
             check_hex_receive=self.check_hex_receive,
             check_hex_send=self.check_hex_send,
-            parameter_filter_btn = self.parameter_filter_btn
+            parameter_filter_btn=self.parameter_filter_btn
         )
 
         # 添加拖拽功能到 top_Frame
