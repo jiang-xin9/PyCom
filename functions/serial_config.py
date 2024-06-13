@@ -1,4 +1,4 @@
-import asyncio
+import asyncio, re
 from PyQt5.QtCore import QObject, QDateTime, QTimer
 from PyQt5.QtGui import QTextCursor
 from qasync import asyncSlot
@@ -6,16 +6,17 @@ from functions.create_serial_ui import CreateSerialUi
 from functions.log_func import Logger
 from config.handel_config import log_folder_path
 from functions.serial_work import SerialWorker
+from functions.create_parameter_filter_ui import CreateParameterFilterUi
 
 
 class SerialConfig(QObject):
     def __init__(self, serial_config_btn, send_btn, command_line, serial_com, receive_text_edit, show_message_box,
                  check_time, check_enter, check_loop_send, line_delayed, check_save_log, line_log, check_hex_receive,
-                 check_hex_send):
+                 check_hex_send, parameter_filter_btn):
         super().__init__()
         self.setup_ui_components(serial_config_btn, send_btn, command_line, serial_com, receive_text_edit,
                                  show_message_box, check_time, check_enter, check_loop_send, line_delayed,
-                                 check_save_log, line_log, check_hex_receive, check_hex_send)
+                                 check_save_log, line_log, check_hex_receive, check_hex_send, parameter_filter_btn)
 
         self.setup_signals()
         self.loop_timer = QTimer(self)
@@ -23,10 +24,13 @@ class SerialConfig(QObject):
         self.log_enabled = False
         self.loop_send_connected = False
         self.serial_ui = None
+        self.filter_condition = None
+        self.capture_condition = None
+        self.filter_ui = None
 
     def setup_ui_components(self, serial_config_btn, send_btn, command_line, serial_com, receive_text_edit,
                             show_message_box, check_time, check_enter, check_loop_send, line_delayed, check_save_log,
-                            line_log, check_hex_receive, check_hex_send):
+                            line_log, check_hex_receive, check_hex_send, parameter_filter_btn):
         self.serial_config_btn = serial_config_btn
         self.send_btn = send_btn
         self.command_line = command_line
@@ -41,6 +45,7 @@ class SerialConfig(QObject):
         self.line_log = line_log
         self.check_hex_receive = check_hex_receive
         self.check_hex_send = check_hex_send
+        self.parameter_filter_btn = parameter_filter_btn
 
     def setup_signals(self):
         self.serial_worker = SerialWorker(self.check_enter, self.check_hex_receive, self.check_hex_send)
@@ -54,6 +59,27 @@ class SerialConfig(QObject):
         self.serial_worker.serial_connection_made.connect(self.on_connection_made)
         self.serial_worker.serial_connection_lost.connect(self.on_connection_lost)
         self.serial_worker.error_occurred.connect(self.display_error)
+
+        self.parameter_filter_btn.clicked.connect(self.show_parameter_filter_config)
+
+    def show_parameter_filter_config(self):
+        if self.filter_ui is None:
+            self.filter_ui = CreateParameterFilterUi(self.apply_filter, self.cancel_filter,
+                                                     self.apply_capture, self.cancel_capture)
+        self.filter_ui.show()
+
+    def cancel_filter(self):
+        self.filter_condition = None
+
+    def apply_filter(self, filter_condition):
+        self.filter_condition = filter_condition
+        print(self.filter_ui.check_Inversion.toggled)
+
+    def apply_capture(self, capture_condition):
+        self.capture_condition = capture_condition
+
+    def cancel_capture(self):
+        self.capture_condition = None
 
     def show_serial_config(self):
         if self.serial_ui is None:
@@ -75,6 +101,21 @@ class SerialConfig(QObject):
             self.serial_worker.send_data(command)
 
     def display_message(self, message):
+        if self.filter_condition:   # 判断数据
+            if isinstance(self.filter_condition, tuple) and len(self.filter_condition) == 2:
+                re_text_1, re_text_2 = self.filter_condition
+                pattern = re.compile(re_text_1 + r".*?" + re_text_2)
+                if not pattern.search(message):
+                    return
+        if self.capture_condition:
+            if self.filter_ui.check_Inversion.toggled:
+                # 只显示包含 "指定" 的消息，过滤掉其他所有消息
+                if self.capture_condition in message:
+                    return
+            else:
+                # 过滤掉包含 "指定" 的消息，显示其他所有消息
+                if self.capture_condition not in message:
+                    return
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
         formatted_message = f"[{timestamp}] 收←: {message}" if timestamp else f"收<: {message}"
         self.append_to_receive_text_edit(formatted_message)
