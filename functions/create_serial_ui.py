@@ -11,7 +11,7 @@ from functions.send_singer import SignalEmitter
 
 
 class CreateSerialUi(QWidget, Serial_Form):
-    port_configured = pyqtSignal(str, int)
+    port_configured = pyqtSignal(str, int, int)
     close_requested = pyqtSignal()
 
     def __init__(self, serial_worker, parent=None):
@@ -45,8 +45,10 @@ class CreateSerialUi(QWidget, Serial_Form):
     def open_port(self):
         port = self.Com_Name_Combo.currentText()
         baud = int(self.Com_Baud_Combo.currentText())
+        _hex = int(self.Com_Hex_Combo.currentText())
         if port:
-            self.port_configured.emit(port, baud)
+            self.serial_worker.set_expected_length(_hex)  # 置期望的hex字节数
+            self.port_configured.emit(port, baud, _hex)
             asyncio.create_task(self.serial_worker.open_serial_port(port, baud))
             self.close()
         else:

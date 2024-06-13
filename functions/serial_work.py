@@ -2,6 +2,7 @@ import asyncio
 import serial_asyncio
 from PyQt5.QtCore import QObject, pyqtSignal
 
+
 class SerialWorker(QObject):
     received_data = pyqtSignal(str)
     data_sent = pyqtSignal(str)
@@ -17,6 +18,7 @@ class SerialWorker(QObject):
         self.check_hex_send = check_hex_send
         self.port_opened = False
         self.closing = False
+        self.expected_length = 16  # 默认值，可以通过UI进行修改
 
     async def open_serial_port(self, port, baudrate):
         if self.port_opened:
@@ -24,7 +26,7 @@ class SerialWorker(QObject):
         try:
             loop = asyncio.get_event_loop()
             self.transport, protocol = await serial_asyncio.create_serial_connection(
-                loop, lambda: SerialProtocol(self), port, baudrate)
+                loop, lambda: SerialProtocol(self, self.expected_length), port, baudrate)
             self.port_opened = True
             self.serial_connection_made.emit()
         except Exception as e:
@@ -55,28 +57,38 @@ class SerialWorker(QObject):
     def is_port_open(self):
         return self.port_opened
 
+    def set_expected_length(self, length):
+        self.expected_length = length
+        if self.transport and isinstance(self.transport.get_protocol(), SerialProtocol):
+            self.transport.get_protocol().set_expected_length(length)
+
 
 class SerialProtocol(asyncio.Protocol):
-    def __init__(self, worker):
+    def __init__(self, worker, expected_length):
         super().__init__()
         self.worker = worker
         self.buffer = bytearray()
+        self.expected_length = expected_length  # hex字节数
 
     def connection_made(self, transport):
         self.transport = transport
 
     def data_received(self, data):
-        self.buffer.extend(data)
-        if self.worker.check_hex_receive.toggled:
-            message = self.buffer.hex()
-            self.worker.received_data.emit(message)
-            self.buffer.clear()
-        else:
-            while b'\r\n' in self.buffer:
-                line, self.buffer = self.buffer.split(b'\r\n', 1)
-                if line:
-                    message = line.decode('utf-8').strip()
+        try:
+            self.buffer.extend(data)
+            if self.worker.check_hex_receive.toggled:
+                while len(self.buffer) >= self.expected_length:
+                    message = ' '.join(f"{byte:02X}" for byte in self.buffer[:self.expected_length])
                     self.worker.received_data.emit(message)
+                    self.buffer = self.buffer[self.expected_length:]
+            else:
+                while b'\r\n' in self.buffer:
+                    line, self.buffer = self.buffer.split(b'\r\n', 1)
+                    if line:
+                        message = line.decode('utf-8').strip()
+                        self.worker.received_data.emit(message)
+        except UnicodeDecodeError:
+            pass
 
     def connection_lost(self, exc):
         if not self.worker.closing:
