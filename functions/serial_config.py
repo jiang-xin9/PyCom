@@ -73,7 +73,6 @@ class SerialConfig(QObject):
 
     def apply_filter(self, filter_condition):
         self.filter_condition = filter_condition
-        print(self.filter_ui.check_Inversion.toggled)
 
     def apply_capture(self, capture_condition):
         self.capture_condition = capture_condition
@@ -101,31 +100,37 @@ class SerialConfig(QObject):
             self.serial_worker.send_data(command)
 
     def display_message(self, message):
-        if self.filter_condition:  # 判断数据
+        if self.filter_message(message):
+            timestamp = self.get_timestamp() if self.check_time.toggled else ""
+            formatted_message = f"[{timestamp}] 收←: {message}" if timestamp else f"收<: {message}"
+            self.append_to_receive_text_edit(formatted_message)
+            self.log_message(formatted_message)
+
+    def filter_message(self, message):
+        if not self.filter_condition and not self.capture_condition:
+            return True
+
+        if self.filter_condition:
             if isinstance(self.filter_condition, tuple) and len(self.filter_condition) == 2:
                 re_text_1, re_text_2 = self.filter_condition
                 pattern = re.compile(re_text_1 + r".*?" + re_text_2)
                 if not pattern.search(message):
-                    return
+                    return False
+
         if self.capture_condition:
             if self.filter_ui.check_Inversion.toggled:
-                # 只显示包含 "指定" 的消息，过滤掉其他所有消息
                 if self.capture_condition in message:
-                    return
+                    return False
             else:
-                # 过滤掉包含 "指定" 的消息，显示其他所有消息
                 if self.capture_condition not in message:
-                    return
-        timestamp = self.get_timestamp() if self.check_time.toggled else ""
-        formatted_message = f"[{timestamp}] 收←: {message}" if timestamp else f"收<: {message}"
-        self.append_to_receive_text_edit(formatted_message)
-        self.log_message(formatted_message)
+                    return False
+
+        return True
 
     def display_sent_message(self, message):
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
         formatted_message = f"[{timestamp}] 发→: {message}" if timestamp else f"发>: {message}"
         self.append_to_receive_text_edit(formatted_message)
-        self.limit_text_edit_size()
         self.log_message(formatted_message)
 
     def on_connection_made(self):
@@ -194,22 +199,26 @@ class SerialConfig(QObject):
         event.accept()
 
     def limit_text_edit_size(self):
-        max_block_count = 2860
+        max_block_count = 648
         document = self.receive_text_edit.document()
+
         if document.blockCount() > max_block_count:
-            cursor = self.receive_text_edit.textCursor()
-            cursor.movePosition(QTextCursor.Start)
-            for _ in range(document.blockCount() - max_block_count):
-                cursor.select(QTextCursor.BlockUnderCursor)
+            cursor = QTextCursor(document)
+            cursor.beginEditBlock()
+
+            while document.blockCount() > max_block_count:
+                cursor.setPosition(document.findBlockByNumber(0).position())
+                cursor.movePosition(QTextCursor.EndOfBlock, QTextCursor.KeepAnchor)
                 cursor.removeSelectedText()
                 cursor.deleteChar()
-                if document.blockCount() <= max_block_count:
-                    break
+
+            cursor.endEditBlock()
 
     def get_timestamp(self):
         return QDateTime.currentDateTime().toString("HH:mm:ss.zzz")
 
     def append_to_receive_text_edit(self, message):
+        self.limit_text_edit_size()
         self.receive_text_edit.append(f"{message}")
 
     def log_message(self, message):
