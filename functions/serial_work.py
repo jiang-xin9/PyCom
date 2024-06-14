@@ -47,10 +47,10 @@ class SerialWorker(QObject):
     def send_data(self, data):
         if self.transport:
             try:
-                if self.check_hex_send.isChecked():
+                if self.check_hex_send.toggled:
                     message = bytes.fromhex(data)
                 else:
-                    message = f"{data}\r\n".encode('utf-8') if self.check_enter.isChecked() else data.encode('utf-8')
+                    message = f"{data}\r\n".encode('utf-8') if self.check_enter.toggled else data.encode('utf-8')
                 self.transport.write(message)
                 self.data_sent.emit(data)
             except Exception as e:
