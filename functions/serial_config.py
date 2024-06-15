@@ -113,7 +113,7 @@ class SerialConfig(QObject):
         if self.filter_condition:
             if isinstance(self.filter_condition, tuple) and len(self.filter_condition) == 2:
                 re_text_1, re_text_2 = self.filter_condition
-                pattern = re.compile(re_text_1 + r".*?" + re_text_2)
+                pattern = re.compile(re.escape(re_text_1) + r".*?" + re.escape(re_text_2))
                 if not pattern.search(message):
                     return False
 
@@ -199,7 +199,7 @@ class SerialConfig(QObject):
         event.accept()
 
     def limit_text_edit_size(self):
-        max_block_count = 648
+        max_block_count = 512
         document = self.receive_text_edit.document()
 
         if document.blockCount() > max_block_count:
