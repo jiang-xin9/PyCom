@@ -76,21 +76,18 @@ class SerialProtocol(asyncio.Protocol):
         self.transport = transport
 
     def data_received(self, data):
-        try:
-            self.buffer.extend(data)
-            if self.worker.check_hex_receive.toggled:
-                while len(self.buffer) >= self.expected_length:
-                    message = ' '.join(f"{byte:02X}" for byte in self.buffer[:self.expected_length])
+        self.buffer.extend(data)
+        if self.worker.check_hex_receive.toggled:
+            while len(self.buffer) >= self.expected_length:
+                message = ' '.join(f"{byte:02X}" for byte in self.buffer[:self.expected_length])
+                self.worker.received_data.emit(message)
+                self.buffer = self.buffer[self.expected_length:]
+        else:
+            while b'\r\n' in self.buffer:
+                line, self.buffer = self.buffer.split(b'\r\n', 1)
+                if line:
+                    message = line.decode('utf-8').strip()
                     self.worker.received_data.emit(message)
-                    self.buffer = self.buffer[self.expected_length:]
-            else:
-                while b'\r\n' in self.buffer:
-                    line, self.buffer = self.buffer.split(b'\r\n', 1)
-                    if line:
-                        message = line.decode('utf-8').strip()
-                        self.worker.received_data.emit(message)
-        except UnicodeDecodeError:
-            pass
 
     def connection_lost(self, exc):
         if not self.worker.closing:
