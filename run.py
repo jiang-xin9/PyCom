@@ -130,3 +130,5 @@ if __name__ == '__main__':
     window.show()
     with loop:
         loop.run_forever()
+
+# Pyinstaller -D -w -i ui\icon\favicon.ico --name="Pycom" run.py
