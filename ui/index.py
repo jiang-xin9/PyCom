@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1123, 740)
+        Form.resize(1127, 740)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/icon/favicon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
@@ -111,7 +111,7 @@ class Ui_Form(object):
         sizePolicy.setHeightForWidth(self.buttonFrame.sizePolicy().hasHeightForWidth())
         self.buttonFrame.setSizePolicy(sizePolicy)
         self.buttonFrame.setStyleSheet("QFrame#buttonFrame {\n"
-"    border: 1px solid #fff;\n"
+"    border: 1px solid rgb(234, 234, 234);\n"
 "    background-color: rgb(234, 234, 234);\n"
 "}")
         self.buttonFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
