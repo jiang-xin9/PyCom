@@ -1,7 +1,7 @@
 import asyncio
 from PyQt5.QtCore import Qt, QEvent
-from PyQt5.QtGui import QKeyEvent, QIcon
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QKeyEvent, QIcon, QColor
+from PyQt5.QtWidgets import QApplication, QGraphicsDropShadowEffect
 from qasync import QEventLoop
 from ui.index import Ui_Form
 from functions.tool import Tool
@@ -50,7 +50,6 @@ class PyCom(CFramelessBase, Ui_Form):
 
         # 添加拖拽功能到 top_Frame
         self.top_Frame.installEventFilter(self)
-
         self.show()
 
     def init_ui_components(self):

@@ -47,7 +47,7 @@
      <property name="styleSheet">
       <string notr="true">QFrame#top_Frame {
 	background-color: rgb(200, 224, 228);
-	border: 1px solid #000000;
+	border: 1px solid #fff;
 }
 QToolButton::hover {
 	background-color: rgb(121, 164, 172);
@@ -234,7 +234,7 @@ QToolButton::hover {
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="buttomFrame">
+    <widget class="QFrame" name="buttonFrame">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -242,8 +242,9 @@ QToolButton::hover {
       </sizepolicy>
      </property>
      <property name="styleSheet">
-      <string notr="true">QFrame#buttomFrame {
-	background-color: rgb(48, 54, 67);
+      <string notr="true">QFrame#buttonFrame {
+	border: 1px solid #fff;
+	background-color: rgb(234, 234, 234);
 }</string>
      </property>
      <property name="frameShape">

@@ -27,7 +27,7 @@ class Ui_Form(object):
         self.top_Frame.setMinimumSize(QtCore.QSize(0, 25))
         self.top_Frame.setStyleSheet("QFrame#top_Frame {\n"
 "    background-color: rgb(200, 224, 228);\n"
-"    border: 1px solid #000000;\n"
+"    border: 1px solid #fff;\n"
 "}\n"
 "QToolButton::hover {\n"
 "    background-color: rgb(121, 164, 172);\n"
@@ -104,23 +104,24 @@ class Ui_Form(object):
         self.close_btn.setObjectName("close_btn")
         self.horizontalLayout.addWidget(self.close_btn)
         self.verticalLayout.addWidget(self.top_Frame)
-        self.buttomFrame = QtWidgets.QFrame(Form)
+        self.buttonFrame = QtWidgets.QFrame(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.buttomFrame.sizePolicy().hasHeightForWidth())
-        self.buttomFrame.setSizePolicy(sizePolicy)
-        self.buttomFrame.setStyleSheet("QFrame#buttomFrame {\n"
-"    background-color: rgb(48, 54, 67);\n"
+        sizePolicy.setHeightForWidth(self.buttonFrame.sizePolicy().hasHeightForWidth())
+        self.buttonFrame.setSizePolicy(sizePolicy)
+        self.buttonFrame.setStyleSheet("QFrame#buttonFrame {\n"
+"    border: 1px solid #fff;\n"
+"    background-color: rgb(234, 234, 234);\n"
 "}")
-        self.buttomFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.buttomFrame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.buttomFrame.setObjectName("buttomFrame")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.buttomFrame)
+        self.buttonFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.buttonFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.buttonFrame.setObjectName("buttonFrame")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.buttonFrame)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setSpacing(1)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.tag_frame = QtWidgets.QFrame(self.buttomFrame)
+        self.tag_frame = QtWidgets.QFrame(self.buttonFrame)
         self.tag_frame.setMinimumSize(QtCore.QSize(0, 31))
         self.tag_frame.setMaximumSize(QtCore.QSize(16777215, 30))
         self.tag_frame.setStyleSheet("QToolButton {\n"
@@ -226,7 +227,7 @@ class Ui_Form(object):
         self.open_btn.setObjectName("open_btn")
         self.horizontalLayout_2.addWidget(self.open_btn)
         self.verticalLayout_2.addWidget(self.tag_frame)
-        self.main_frame = QtWidgets.QFrame(self.buttomFrame)
+        self.main_frame = QtWidgets.QFrame(self.buttonFrame)
         self.main_frame.setStyleSheet("")
         self.main_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.main_frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -462,7 +463,7 @@ class Ui_Form(object):
         self.horizontalLayout_3.addWidget(self.quick_frame, 0, QtCore.Qt.AlignRight)
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
         self.verticalLayout_2.addWidget(self.main_frame)
-        self.verticalLayout.addWidget(self.buttomFrame)
+        self.verticalLayout.addWidget(self.buttonFrame)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -489,5 +490,5 @@ class Ui_Form(object):
         self.check_hex_receive.setText(_translate("Form", "Hex接收"))
         self.check_hex_send.setText(_translate("Form", "Hex发送"))
 from coustom_ui.checkbox import CustomToggleButton
-from coustom_ui.pushbutton import NewQPushButton
+from coustom_ui.pushbutton  import NewQPushButton
 from . import resources
