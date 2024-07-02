@@ -1,7 +1,7 @@
 import asyncio
 from PyQt5.QtCore import Qt, QEvent
-from PyQt5.QtGui import QKeyEvent, QIcon, QColor
-from PyQt5.QtWidgets import QApplication, QGraphicsDropShadowEffect
+from PyQt5.QtGui import QKeyEvent, QIcon
+from PyQt5.QtWidgets import QApplication
 from qasync import QEventLoop
 from ui.index import Ui_Form
 from functions.tool import Tool
@@ -19,6 +19,8 @@ class PyCom(CFramelessBase, Ui_Form):
         super(PyCom, self).__init__()
         self.setupUi(self)
         CustomMessageBox.default_parent = self  # 设置默认父窗口
+        self.commands = []
+        self.current_index = -1
         self.tool = Tool()
         self.init_ui_components()
         self.init_signals()
@@ -50,6 +52,7 @@ class PyCom(CFramelessBase, Ui_Form):
 
         # 添加拖拽功能到 top_Frame
         self.top_Frame.installEventFilter(self)
+
         self.show()
 
     def init_ui_components(self):
@@ -62,6 +65,16 @@ class PyCom(CFramelessBase, Ui_Form):
         )
         self.fast_btn.create_btn()
         self.back_expand = BackExpand(self)  # 按钮收缩侧边栏
+        self.add_widget_btn.clicked.connect(self.add_new_instance)
+
+    def add_new_instance(self):
+        """通过按钮创建新的界面"""
+        current_pos = self.geometry()   # 获取几何属性
+        new_x = current_pos.x() + 30  # 获取x轴点
+        new_y = current_pos.y() + 30  # 获取y轴点
+        self.new_ui = PyCom()
+        self.new_ui.move(new_x,new_y)
+        self.show()
 
     def show_instruction(self):
         self.instruction_config = InstructionConfig(self.serial)
@@ -77,6 +90,7 @@ class PyCom(CFramelessBase, Ui_Form):
         self.close_btn.clicked.connect(self.close)
         self.min_btn.clicked.connect(self.showMinimized)
         self.max_btn.clicked.connect(self.toggle_maximize_restore)
+        self.send_btn.clicked.connect(self.save_send_command)       # 存储发送指令
         self.clear_send_text.clicked.connect(lambda: self.tool.clear_widget(self.command_line))
         self.clear_receive_text.clicked.connect(lambda: self.tool.clear_widget(self.receive_textEdit))
         self.send_instruction_btn.clicked.connect(self.show_instruction)
@@ -119,6 +133,25 @@ class PyCom(CFramelessBase, Ui_Form):
                     self.send_btn.click()
                 return True
         return super().eventFilter(obj, event)
+
+    def save_send_command(self):
+        command = self.command_line.text()
+        if command and command not in self.commands:
+            self.commands.append(command)
+            self.current_index = len(self.commands)  # 重置索引到最新位置
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Up:
+            if self.commands and self.current_index > 0:
+                self.current_index -= 1
+                self.command_line.setText(self.commands[self.current_index])
+        elif event.key() == Qt.Key_Down:
+            if self.commands and self.current_index < len(self.commands) - 1:
+                self.current_index += 1
+                self.command_line.setText(self.commands[self.current_index])
+            elif self.current_index == len(self.commands) - 1:
+                self.current_index += 1
+                self.command_line.clear()
 
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1127</width>
-    <height>740</height>
+    <height>752</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,10 +67,10 @@ QToolButton {
        <number>3</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
@@ -106,7 +106,7 @@ QToolButton {
          </font>
         </property>
         <property name="text">
-         <string>PyCom V1.0.0</string>
+         <string>PyCom V1.0.1</string>
         </property>
        </widget>
       </item>
@@ -280,7 +280,7 @@ QToolButton::hover {
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>30</height>
+          <height>35</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -288,7 +288,6 @@ QToolButton::hover {
 	border: none;
 }
 QFrame#tag_frame {
-	
 	background-color: rgb(255, 255, 255);
 }
 QToolButton {
@@ -313,13 +312,13 @@ QToolButton::hover {
           <number>3</number>
          </property>
          <property name="leftMargin">
-          <number>3</number>
+          <number>1</number>
          </property>
          <property name="topMargin">
           <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="bottomMargin">
           <number>0</number>
@@ -351,14 +350,17 @@ QToolButton::hover {
             <number>0</number>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <property name="spacing">
+             <number>6</number>
+            </property>
             <property name="leftMargin">
-             <number>0</number>
+             <number>3</number>
             </property>
             <property name="topMargin">
              <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>0</number>
+             <number>3</number>
             </property>
             <property name="bottomMargin">
              <number>0</number>
@@ -417,7 +419,7 @@ QToolButton::hover {
               </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>80</width>
                 <height>28</height>
                </size>
               </property>
@@ -439,7 +441,7 @@ QToolButton::hover {
               </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>80</width>
                 <height>28</height>
                </size>
               </property>
@@ -681,7 +683,7 @@ QToolButton::hover {
                       <widget class="QLabel" name="label_3">
                        <property name="minimumSize">
                         <size>
-                         <width>0</width>
+                         <width>40</width>
                          <height>30</height>
                         </size>
                        </property>

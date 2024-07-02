@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1127, 740)
+        Form.resize(1127, 752)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/icon/favicon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
@@ -39,7 +39,7 @@ class Ui_Form(object):
         self.top_Frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.top_Frame.setObjectName("top_Frame")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.top_Frame)
-        self.horizontalLayout.setContentsMargins(3, 0, 0, 0)
+        self.horizontalLayout.setContentsMargins(3, 1, 2, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.window_ico = QtWidgets.QLabel(self.top_Frame)
         self.window_ico.setMinimumSize(QtCore.QSize(20, 20))
@@ -123,12 +123,11 @@ class Ui_Form(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.tag_frame = QtWidgets.QFrame(self.buttonFrame)
         self.tag_frame.setMinimumSize(QtCore.QSize(0, 31))
-        self.tag_frame.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.tag_frame.setMaximumSize(QtCore.QSize(16777215, 35))
         self.tag_frame.setStyleSheet("QToolButton {\n"
 "    border: none;\n"
 "}\n"
 "QFrame#tag_frame {\n"
-"    \n"
 "    background-color: rgb(255, 255, 255);\n"
 "}\n"
 "QToolButton {\n"
@@ -145,7 +144,7 @@ class Ui_Form(object):
         self.tag_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.tag_frame.setObjectName("tag_frame")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tag_frame)
-        self.horizontalLayout_2.setContentsMargins(3, 0, 0, 0)
+        self.horizontalLayout_2.setContentsMargins(1, 0, 3, 0)
         self.horizontalLayout_2.setSpacing(3)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.frame = QtWidgets.QFrame(self.tag_frame)
@@ -157,7 +156,8 @@ class Ui_Form(object):
         self.frame.setLineWidth(0)
         self.frame.setObjectName("frame")
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame)
-        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_7.setContentsMargins(3, 0, 3, 0)
+        self.horizontalLayout_7.setSpacing(6)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.serial_config_btn = NewQPushButton(self.frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -185,7 +185,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.parameter_filter_btn.sizePolicy().hasHeightForWidth())
         self.parameter_filter_btn.setSizePolicy(sizePolicy)
-        self.parameter_filter_btn.setMinimumSize(QtCore.QSize(0, 28))
+        self.parameter_filter_btn.setMinimumSize(QtCore.QSize(80, 28))
         self.parameter_filter_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.parameter_filter_btn.setObjectName("parameter_filter_btn")
         self.horizontalLayout_7.addWidget(self.parameter_filter_btn)
@@ -195,7 +195,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.upgrade_btn.sizePolicy().hasHeightForWidth())
         self.upgrade_btn.setSizePolicy(sizePolicy)
-        self.upgrade_btn.setMinimumSize(QtCore.QSize(0, 28))
+        self.upgrade_btn.setMinimumSize(QtCore.QSize(80, 28))
         self.upgrade_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.upgrade_btn.setObjectName("upgrade_btn")
         self.horizontalLayout_7.addWidget(self.upgrade_btn)
@@ -284,7 +284,7 @@ class Ui_Form(object):
         self.horizontalLayout_4.setContentsMargins(3, -1, 3, -1)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.label_3 = QtWidgets.QLabel(self.frame_3)
-        self.label_3.setMinimumSize(QtCore.QSize(0, 30))
+        self.label_3.setMinimumSize(QtCore.QSize(40, 30))
         self.label_3.setMaximumSize(QtCore.QSize(16777215, 30))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
@@ -471,7 +471,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "PyCom"))
-        self.window_title.setText(_translate("Form", "PyCom V1.0.0"))
+        self.window_title.setText(_translate("Form", "PyCom V1.0.1"))
         self.serial_config_btn.setText(_translate("Form", "串口配置"))
         self.send_instruction_btn.setText(_translate("Form", "多指令发送"))
         self.parameter_filter_btn.setText(_translate("Form", "参数过虑"))
@@ -490,5 +490,5 @@ class Ui_Form(object):
         self.check_hex_receive.setText(_translate("Form", "Hex接收"))
         self.check_hex_send.setText(_translate("Form", "Hex发送"))
 from coustom_ui.checkbox import CustomToggleButton
-from coustom_ui.pushbutton  import NewQPushButton
+from coustom_ui.pushbutton import NewQPushButton
 from . import resources
