@@ -63,24 +63,30 @@ class SerialConfig(QObject):
         self.parameter_filter_btn.clicked.connect(self.show_parameter_filter_config)
 
     def show_parameter_filter_config(self):
+        """显示参数过滤配置界面"""
         if self.filter_ui is None:
             self.filter_ui = CreateParameterFilterUi(self.apply_filter, self.cancel_filter,
                                                      self.apply_capture, self.cancel_capture)
         self.filter_ui.show()
 
     def cancel_filter(self):
+        """取消过滤条件"""
         self.filter_condition = None
 
     def apply_filter(self, filter_condition):
+        """应用过滤条件"""
         self.filter_condition = filter_condition
 
     def apply_capture(self, capture_condition):
+        """应用捕获条件"""
         self.capture_condition = capture_condition
 
     def cancel_capture(self):
+        """取消捕获条件"""
         self.capture_condition = None
 
     def show_serial_config(self):
+        """显示串口配置界面"""
         if self.serial_ui is None:
             self.serial_ui = CreateSerialUi(self.serial_worker)
             self.serial_ui.port_configured.connect(self.update_port_config)
@@ -88,11 +94,13 @@ class SerialConfig(QObject):
         self.serial_ui.show()
 
     def update_port_config(self, port, baudrate):
+        """更新串口配置"""
         self.port = port
         self.baudrate = baudrate
 
     @asyncSlot()
     async def send_message(self, command=None):
+        """发送消息到串口"""
         if not command:
             message = self.command_line.text()
             self.serial_worker.send_data(message)
@@ -100,6 +108,7 @@ class SerialConfig(QObject):
             self.serial_worker.send_data(command)
 
     def display_message(self, message):
+        """显示接收到的消息"""
         if self.filter_message(message):
             timestamp = self.get_timestamp() if self.check_time.toggled else ""
             formatted_message = f"[{timestamp}] 收←: {message}" if timestamp else f"收<: {message}"
@@ -107,6 +116,7 @@ class SerialConfig(QObject):
             self.log_message(formatted_message)
 
     def filter_message(self, message):
+        """根据过滤和捕获条件过滤消息"""
         if not self.filter_condition and not self.capture_condition:
             return True
 
@@ -128,12 +138,14 @@ class SerialConfig(QObject):
         return True
 
     def display_sent_message(self, message):
+        """显示发送的消息"""
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
         formatted_message = f"[{timestamp}] 发→: {message}" if timestamp else f"发>: {message}"
         self.append_to_receive_text_edit(formatted_message)
         self.log_message(formatted_message)
 
     def on_connection_made(self):
+        """串口连接建立时的处理"""
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
         message = f"[{timestamp}] Opened port {self.port} at {self.baudrate} baud\n" \
             if timestamp else f"Opened port {self.port} at {self.baudrate} baud\n"
@@ -143,6 +155,7 @@ class SerialConfig(QObject):
             self.serial_com.setText(self.port)
 
     def on_connection_lost(self):
+        """串口关闭连接"""
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
         message = f"[{timestamp}] Closed port" if timestamp else "Closed port"
         self.append_to_receive_text_edit(message)
@@ -150,15 +163,18 @@ class SerialConfig(QObject):
         self.stop_saving_log()
 
     def display_error(self, error):
+        """显示错误信息"""
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
         error_message = f"[{timestamp}] {error}" if timestamp else error
         self.append_to_receive_text_edit(error_message)
         self.show_message_box(f"{self.port} Disconnect", "error", self.serial_ui)
 
     def toggle_loop_send(self, toggled):
+        """切换循环发送功能"""
         self.start_loop_send() if toggled else self.stop_loop_send()
 
     def start_loop_send(self):
+        """开始循环发送"""
         try:
             interval = float(self.line_delayed.text()) * 1000
         except ValueError:
@@ -172,33 +188,40 @@ class SerialConfig(QObject):
         self.loop_timer.start(int(interval))
 
     def stop_loop_send(self):
+        """停止循环发送"""
         self.loop_timer.stop()
         if self.loop_send_connected:
             self.loop_timer.timeout.disconnect(self.send_message)
             self.loop_send_connected = False
 
     def toggle_save_log(self, toggled):
+        """切换保存日志功能"""
         self.start_saving_log() if toggled else self.stop_saving_log()
 
     def stop_saving_log(self):
+        """停止保存日志"""
         if self.logger:
             self.logger.stop_logging()
             self.logger = None
 
     def start_saving_log(self):
+        """开始保存日志"""
         max_size_kb = self.line_log.text()
         self.logger = Logger(log_folder_path, max_size_kb) if max_size_kb else Logger(log_folder_path)
         self.logger.start()
 
     def close_serial_port(self):
+        """关闭串口端口"""
         asyncio.create_task(self.serial_worker.close_serial_port())
 
     def closeEvent(self, event):
+        """处理窗口关闭事件"""
         asyncio.create_task(self.serial_worker.close_serial_port())
         self.stop_saving_log()
         event.accept()
 
     def limit_text_edit_size(self):
+        """限制接收文本编辑框的大小"""
         max_block_count = 512
         document = self.receive_text_edit.document()
 
@@ -214,13 +237,17 @@ class SerialConfig(QObject):
 
             cursor.endEditBlock()
 
+
     def get_timestamp(self):
+        """获取当前时间戳"""
         return QDateTime.currentDateTime().toString("HH:mm:ss.zzz")
 
     def append_to_receive_text_edit(self, message):
+        """将消息追加到接收文本编辑框"""
         self.limit_text_edit_size()
         self.receive_text_edit.append(f"{message}")
 
     def log_message(self, message):
+        """记录消息日志"""
         if self.logger:
             self.logger.log_signal.emit(message)
