@@ -1,6 +1,6 @@
 import asyncio, re
 from PyQt5.QtCore import QObject, QDateTime, QTimer
-from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import QTextCursor, QTextCharFormat, QColor
 from qasync import asyncSlot
 from functions.create_serial_ui import CreateSerialUi
 from functions.log_func import Logger
@@ -109,64 +109,95 @@ class SerialConfig(QObject):
 
     def display_message(self, message):
         """显示接收到的消息"""
-        if self.filter_message(message):
+        filtered_message, highlighted = self._filter_message(message)
+        if filtered_message:
             timestamp = self.get_timestamp() if self.check_time.toggled else ""
-            formatted_message = f"[{timestamp}] 收←: {message}" if timestamp else f"收<: {message}"
-            self.append_to_receive_text_edit(formatted_message)
+            formatted_message = f"[{timestamp}] 收←: {filtered_message}" if timestamp else f"收<: {filtered_message}"
+            self._append_to_receive_text_edit(formatted_message, highlighted)
             self.log_message(formatted_message)
 
-    def filter_message(self, message):
-        """根据过滤和捕获条件过滤消息"""
+    def _filter_message(self, message):
+        """根据过滤和捕获条件过滤消息并高亮显示特定字符"""
         if not self.filter_condition and not self.capture_condition:
-            return True
+            return message, False
+
+        if self.filter_condition and not self._check_filter_condition(message):
+            return None, False
+
+        highlighted = False
+        if self.capture_condition:
+            message, highlighted = self._apply_highlighting(message, self.capture_condition,
+                                                            invert=self.filter_ui.check_Inversion.toggled if self.filter_ui else False)
 
         if self.filter_condition:
-            if isinstance(self.filter_condition, tuple) and len(self.filter_condition) == 2:
-                re_text_1, re_text_2 = self.filter_condition
-                pattern = re.compile(re.escape(re_text_1) + r".*?" + re.escape(re_text_2))
-                if not pattern.search(message):
-                    return False
+            message, highlighted = self._apply_highlighting(message, self.filter_condition, is_filter=True)
 
-        if self.capture_condition:
-            if self.filter_ui.check_Inversion.toggled:
-                if self.capture_condition in message:
-                    return False
-            else:
-                if self.capture_condition not in message:
-                    return False
+        return message, highlighted
 
+    def _check_filter_condition(self, message):
+        """检查消息是否符合过滤条件"""
+        if isinstance(self.filter_condition, tuple) and len(self.filter_condition) == 2:
+            re_text_1, re_text_2 = self.filter_condition
+            pattern = re.compile(re.escape(re_text_1) + r".*?" + re.escape(re_text_2))
+            return bool(pattern.search(message))
         return True
+
+    def _apply_highlighting(self, message, condition, is_filter=False, invert=False):
+        """应用过滤条件、捕获条件并高亮显示特定字符"""
+        highlighted_message = ""
+        highlighted = False
+        start = 0
+
+        if isinstance(condition, tuple) and len(condition) == 2:
+            re_text_1, re_text_2 = condition
+            pattern = re.compile(re.escape(re_text_1) + r"(.*?)" + re.escape(re_text_2))
+        else:
+            pattern = re.compile(re.escape(condition))
+
+        for match in pattern.finditer(message):
+            highlighted_message += message[start:match.start()]
+            highlighted_message += f"<highlight>{match.group()}</highlight>"
+            start = match.end()
+            highlighted = True
+
+        highlighted_message += message[start:]
+
+        if invert:
+            return self._apply_inversion_highlighting(message, condition), True
+
+        return highlighted_message, highlighted
+
+    def _apply_inversion_highlighting(self, message, condition):
+        """应用反转捕获条件并高亮显示非捕获部分"""
+        inverted_highlight_message = ""
+        start = 0
+        for match in re.finditer(re.escape(condition), message):
+            inverted_highlight_message += f"<highlight>{message[start:match.start()]}</highlight>"
+            inverted_highlight_message += match.group()
+            start = match.end()
+        inverted_highlight_message += f"<highlight>{message[start:]}</highlight>"
+        return inverted_highlight_message
 
     def display_sent_message(self, message):
         """显示发送的消息"""
         timestamp = self.get_timestamp() if self.check_time.toggled else ""
         formatted_message = f"[{timestamp}] 发→: {message}" if timestamp else f"发>: {message}"
-        self.append_to_receive_text_edit(formatted_message)
+        self._append_to_receive_text_edit(formatted_message)
         self.log_message(formatted_message)
 
     def on_connection_made(self):
         """串口连接建立时的处理"""
-        timestamp = self.get_timestamp() if self.check_time.toggled else ""
-        message = f"[{timestamp}] Opened port {self.port} at {self.baudrate} baud\n" \
-            if timestamp else f"Opened port {self.port} at {self.baudrate} baud\n"
-        self.append_to_receive_text_edit(message)
         self.show_message_box(f"{self.port} Success", "success")
         if self.port:
             self.serial_com.setText(self.port)
 
     def on_connection_lost(self):
         """串口关闭连接"""
-        timestamp = self.get_timestamp() if self.check_time.toggled else ""
-        message = f"[{timestamp}] Closed port" if timestamp else "Closed port"
-        self.append_to_receive_text_edit(message)
         self.show_message_box(f"{self.port} Disconnect", "success", self.serial_ui)
         self.stop_saving_log()
 
     def display_error(self, error):
         """显示错误信息"""
-        timestamp = self.get_timestamp() if self.check_time.toggled else ""
-        error_message = f"[{timestamp}] {error}" if timestamp else error
-        self.append_to_receive_text_edit(error_message)
         self.show_message_box(f"{self.port} Disconnect", "error", self.serial_ui)
 
     def toggle_loop_send(self, toggled):
@@ -220,7 +251,7 @@ class SerialConfig(QObject):
         self.stop_saving_log()
         event.accept()
 
-    def limit_text_edit_size(self):
+    def _limit_text_edit_size(self):
         """限制接收文本编辑框的大小"""
         max_block_count = 512
         document = self.receive_text_edit.document()
@@ -237,15 +268,47 @@ class SerialConfig(QObject):
 
             cursor.endEditBlock()
 
-
     def get_timestamp(self):
         """获取当前时间戳"""
         return QDateTime.currentDateTime().toString("HH:mm:ss.zzz")
 
-    def append_to_receive_text_edit(self, message):
-        """将消息追加到接收文本编辑框"""
-        self.limit_text_edit_size()
-        self.receive_text_edit.append(f"{message}")
+    def _append_to_receive_text_edit(self, message, highlighted=False):
+        """写入ui文本"""
+        if highlighted:
+            self._append_highlighted_text(message)
+        else:
+            self._append_plain_text(message)
+
+    def _append_plain_text(self, message):
+        """显示数据并保持滚动条处于最下面"""
+        self._limit_text_edit_size()
+        cursor = self.receive_text_edit.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        cursor.insertText(message + "\n")
+        self.receive_text_edit.setTextCursor(cursor)
+
+    def _append_highlighted_text(self, message):
+        """显示指定字符的高光颜色"""
+        self._limit_text_edit_size()
+        cursor = self.receive_text_edit.textCursor()
+        cursor.movePosition(QTextCursor.End)
+
+        default_format = QTextCharFormat()
+        red_format = QTextCharFormat()
+        red_format.setForeground(QColor('red'))
+
+        cursor.beginEditBlock()
+        start = 0
+        pattern = re.compile(r'<highlight>(.*?)</highlight>')
+        for match in pattern.finditer(message):
+            cursor.insertText(message[start:match.start()], default_format)
+            cursor.insertText(match.group(1), red_format)
+            start = match.end()
+        cursor.insertText(message[start:], default_format)
+        cursor.insertText("\n")
+        cursor.endEditBlock()
+
+        self.receive_text_edit.setTextCursor(cursor)
 
     def log_message(self, message):
         """记录消息日志"""
