@@ -121,9 +121,6 @@ class SerialConfig(QObject):
         if not self.filter_condition and not self.capture_condition:
             return message, False
 
-        if self.filter_condition and not self._check_filter_condition(message):
-            return None, False
-
         highlighted = False
         if self.capture_condition:
             message, highlighted = self._apply_highlighting(message, self.capture_condition,
@@ -134,14 +131,6 @@ class SerialConfig(QObject):
 
         return message, highlighted
 
-    def _check_filter_condition(self, message):
-        """检查消息是否符合过滤条件"""
-        if isinstance(self.filter_condition, tuple) and len(self.filter_condition) == 2:
-            re_text_1, re_text_2 = self.filter_condition
-            pattern = re.compile(re.escape(re_text_1) + r".*?" + re.escape(re_text_2))
-            return bool(pattern.search(message))
-        return True
-
     def _apply_highlighting(self, message, condition, is_filter=False, invert=False):
         """应用过滤条件、捕获条件并高亮显示特定字符"""
         highlighted_message = []
@@ -150,9 +139,13 @@ class SerialConfig(QObject):
 
         if isinstance(condition, tuple) and len(condition) == 2:
             re_text_1, re_text_2 = condition
-            pattern = re.compile(re.escape(re_text_1) + r"(.*?)" + re.escape(re_text_2))
+            # 匹配指定数据内的数据
+            pattern = re.compile(rf"(?<=\b{re.escape(re_text_1)})(.*?)(?=\b{re.escape(re_text_2)})")
         else:
-            pattern = re.compile(re.escape(condition))
+            pattern = re.compile(rf"{re.escape(condition)}")
+
+        if is_filter and not pattern.search(message):
+            return None, False
 
         for match in pattern.finditer(message):
             highlighted_message.append(message[start:match.start()])
