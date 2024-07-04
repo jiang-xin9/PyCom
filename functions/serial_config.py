@@ -144,7 +144,7 @@ class SerialConfig(QObject):
 
     def _apply_highlighting(self, message, condition, is_filter=False, invert=False):
         """应用过滤条件、捕获条件并高亮显示特定字符"""
-        highlighted_message = ""
+        highlighted_message = []
         highlighted = False
         start = 0
 
@@ -155,28 +155,28 @@ class SerialConfig(QObject):
             pattern = re.compile(re.escape(condition))
 
         for match in pattern.finditer(message):
-            highlighted_message += message[start:match.start()]
-            highlighted_message += f"<highlight>{match.group()}</highlight>"
+            highlighted_message.append(message[start:match.start()])
+            highlighted_message.append(f"<highlight>{match.group()}</highlight>")
             start = match.end()
             highlighted = True
 
-        highlighted_message += message[start:]
+        highlighted_message.append(message[start:])
 
         if invert:
             return self._apply_inversion_highlighting(message, condition), True
 
-        return highlighted_message, highlighted
+        return ''.join(highlighted_message), highlighted
 
     def _apply_inversion_highlighting(self, message, condition):
         """应用反转捕获条件并高亮显示非捕获部分"""
-        inverted_highlight_message = ""
+        inverted_highlight_message = []
         start = 0
         for match in re.finditer(re.escape(condition), message):
-            inverted_highlight_message += f"<highlight>{message[start:match.start()]}</highlight>"
-            inverted_highlight_message += match.group()
+            inverted_highlight_message.append(f"<highlight>{message[start:match.start()]}</highlight>")
+            inverted_highlight_message.append(match.group())
             start = match.end()
-        inverted_highlight_message += f"<highlight>{message[start:]}</highlight>"
-        return inverted_highlight_message
+        inverted_highlight_message.append(f"<highlight>{message[start:]}</highlight>")
+        return ''.join(inverted_highlight_message)
 
     def display_sent_message(self, message):
         """显示发送的消息"""
